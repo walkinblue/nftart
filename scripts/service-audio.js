@@ -14,7 +14,7 @@ async function onMicrophoneGranted(stream) {
         console.log("active sound1");
         audioContext = new AudioContext()
         console.log("active sound2");
-        await audioContext.audioWorklet.addModule('scripts/vumeter-processor.js')
+        await audioContext.audioWorklet.addModule('/nftart/scripts/vumeter-processor.js')
         console.log("active sound3");
         let microphone = audioContext.createMediaStreamSource(stream)
         console.log("active sound4");
