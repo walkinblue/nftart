@@ -34,13 +34,11 @@ async function onMicrophoneGranted(stream) {
 function activeSound () {
     console.log("active sound0");
     try {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        // navigator.getUserMedia = MediaDevices.getUserMedia;
         
-        navigator.getUserMedia(
-            { audio: true, video: false },
-            onMicrophoneGranted,
-            onMicrophoneDenied
-        );
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        .then(onMicrophoneGranted)
+        .catch(onMicrophoneDenied);
 
     } catch(e) {
         console.error(e);
