@@ -67,31 +67,31 @@ function loadingAudion(button){
 
 
 
-    usermic = new Tone.UserMedia();
+    // usermic = new Tone.UserMedia();
 
-    const micFFT = new Tone.FFT();
-    usermic.connect(micFFT);
-    fft({
-        tone: micFFT,
-        parent: document.querySelector("#fftmonitor"),
-        height: monitorheight,
-    });
+    // const micFFT = new Tone.FFT();
+    // usermic.connect(micFFT);
+    // fft({
+    //     tone: micFFT,
+    //     parent: document.querySelector("#fftmonitor"),
+    //     height: monitorheight,
+    // });
 
-    const micMeter = new Tone.Meter();
-    usermic.connect(micMeter);
-    meter({
-        tone: micMeter,
-        parent: document.querySelector("#metermonitor"),
-        height: monitorheight,
-    });
+    // const micMeter = new Tone.Meter();
+    // usermic.connect(micMeter);
+    // meter({
+    //     tone: micMeter,
+    //     parent: document.querySelector("#metermonitor"),
+    //     height: monitorheight,
+    // });
 
-    const micWaveform = new Tone.Waveform();
-    usermic.connect(micWaveform);
-    waveform({
-        tone: micWaveform,
-        parent: document.querySelector("#wavemonitor"),
-        height: monitorheight,
-    });
+    // const micWaveform = new Tone.Waveform();
+    // usermic.connect(micWaveform);
+    // waveform({
+    //     tone: micWaveform,
+    //     parent: document.querySelector("#wavemonitor"),
+    //     height: monitorheight,
+    // });
 
 
 
@@ -99,21 +99,33 @@ function loadingAudion(button){
               
 
     const micButton = document.querySelector("tone-mic-button");
-    
-    micButton.supported = Tone.UserMedia.supported;
-    micButton.addEventListener("open", () => {
-        navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(onMicrophoneGranted)
-        .catch(onMicrophoneDenied);
+    const mButton = document.getElementById("microphone");
 
-        usermic.open();
-        button.classList.add("recording");
+    mButton.addEventListener("click", () => {
+        if(micListening == false){
+            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+            .then(onMicrophoneGranted)
+            .catch(onMicrophoneDenied);    
+        }else{
+            onMicrophoneSuspend();
+        }
+            // usermic.open();
     });
-    micButton.addEventListener("close", () => {
-        onMicrophoneSuspend();
-        usermic.close()
-        button.classList.remove("recording");
-    });
+
+    // micButton.supported = Tone.UserMedia.supported;
+    // micButton.addEventListener("open", () => {
+    //     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+    //     .then(onMicrophoneGranted)
+    //     .catch(onMicrophoneDenied);
+
+    //     // usermic.open();
+    //     button.classList.add("recording");
+    // });
+    // micButton.addEventListener("close", () => {
+    //     onMicrophoneSuspend();
+    //     usermic.close()
+    //     button.classList.remove("recording");
+    // });
     
     
     // button.addEventListener('click', () => {
