@@ -67,31 +67,7 @@ function loadingAudion(button){
 
 
 
-    // usermic = new Tone.UserMedia();
 
-    // const micFFT = new Tone.FFT();
-    // usermic.connect(micFFT);
-    // fft({
-    //     tone: micFFT,
-    //     parent: document.querySelector("#fftmonitor"),
-    //     height: monitorheight,
-    // });
-
-    // const micMeter = new Tone.Meter();
-    // usermic.connect(micMeter);
-    // meter({
-    //     tone: micMeter,
-    //     parent: document.querySelector("#metermonitor"),
-    //     height: monitorheight,
-    // });
-
-    // const micWaveform = new Tone.Waveform();
-    // usermic.connect(micWaveform);
-    // waveform({
-    //     tone: micWaveform,
-    //     parent: document.querySelector("#wavemonitor"),
-    //     height: monitorheight,
-    // });
 
 
 
@@ -112,36 +88,44 @@ function loadingAudion(button){
             // usermic.open();
     });
 
-    // micButton.supported = Tone.UserMedia.supported;
-    // micButton.addEventListener("open", () => {
-    //     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-    //     .then(onMicrophoneGranted)
-    //     .catch(onMicrophoneDenied);
+    micButton.supported = Tone.UserMedia.supported;
+    micButton.addEventListener("open", () => {
+        alert(1);
+        usermic = new Tone.UserMedia();
 
-    //     // usermic.open();
-    //     button.classList.add("recording");
-    // });
-    // micButton.addEventListener("close", () => {
-    //     onMicrophoneSuspend();
-    //     usermic.close()
-    //     button.classList.remove("recording");
-    // });
-    
-    
-    // button.addEventListener('click', () => {
-    //     //active microphone
-    //     if(isRecording){
-    //         console.log("actived already.");
-    //         return;
-    //     }
-    //     try {    
-    //         isRecording = true;
-    //     } catch(e) {
-    //         console.error(e);
-    //     }
-    //     //rending the recording
+        const micFFT = new Tone.FFT();
+        usermic.connect(micFFT);
+        fft({
+            tone: micFFT,
+            parent: document.querySelector("#fftmonitor"),
+            height: monitorheight,
+        });
+
+        const micMeter = new Tone.Meter();
+        usermic.connect(micMeter);
+        meter({
+            tone: micMeter,
+            parent: document.querySelector("#metermonitor"),
+            height: monitorheight,
+        });
+
+        const micWaveform = new Tone.Waveform();
+        usermic.connect(micWaveform);
+        waveform({
+            tone: micWaveform,
+            parent: document.querySelector("#wavemonitor"),
+            height: monitorheight,
+        });
+
+        usermic.open();
         
-    // })
+    });
+    
+    micButton.addEventListener("close", () => {
+        usermic.close()
+    });
+    
+    
 
 }
 
