@@ -11,7 +11,7 @@ function setVolumns(vol) {
 miclock = false;
 micListening = false;
 async function onMicrophoneGranted(stream) {
-    if (true) {
+    if (isFirstTime) {
         miclock = true;
         audioContext = new AudioContext();
         await audioContext.audioWorklet.addModule('/nftart/scripts/vumeter-processor.js')
@@ -31,58 +31,10 @@ async function onMicrophoneGranted(stream) {
         micListening = true;
         miclock = false;
         
-    }else{
-        let loop = 5;
-        while(miclock && loop -- > 0){
-            await sleep(1000);
-        }
-        if(miclock)return;
-        miclock = true;
-        let result = await audioContext.resume();
-        await sleep(1000);
-        micListening = true;
-        console.log("audio context resumed.." + result);
-        miclock = false;
-    }
-}
-async function onMicrophoneSuspend(){
-    let loop = 5;
-    while(miclock && loop -- > 0){
-        await sleep(1000);
-    }
-    if(miclock)return;
-    console.log("audio context suspend..");
-    miclock = true;
-    await audioContext.suspend();
-    await sleep(1000);
-    micListening = false;
-    miclock = false;
-}
-let isFirstTime = true;
-let usermic = null;
-let monitorheight = 80;
-let micMonitoring = false;
 
-function loadingAudion(button){
-
-
-
-
-
-
-
-    // bind the interface
-              
-
-    const micButton = document.querySelector("tone-mic-button");
-    const mButton = document.getElementById("microphone");
-
-    micButton.supported = Tone.UserMedia.supported;
-    micButton.addEventListener("touch", () => {
         Tone.setContext(audioContext);
 
-        if(isFirstTime){
-            usermic = new Tone.UserMedia();
+        usermic = new Tone.UserMedia();
 
             const micFFT = new Tone.FFT();
             usermic.connect(micFFT);
@@ -110,15 +62,56 @@ function loadingAudion(button){
 
             usermic.open();    
             isFirstTime = false;
-            micMonitoring = true;
-        }else if(micMonitoring == false){
-            usermic.open();    
-            micMonitoring = true;
-        }else {
-            usermic.close();
-            micMonitoring = false;
+    }else{
+        let loop = 5;
+        while(miclock && loop -- > 0){
+            await sleep(1000);
         }
-    });
+        if(miclock)return;
+        miclock = true;
+        let result = await audioContext.resume();
+        await sleep(1000);
+        micListening = true;
+        console.log("audio context resumed.." + result);
+        miclock = false;
+
+        usermic.open();    
+    }
+}
+async function onMicrophoneSuspend(){
+    let loop = 5;
+    while(miclock && loop -- > 0){
+        await sleep(1000);
+    }
+    if(miclock)return;
+    console.log("audio context suspend..");
+    miclock = true;
+    await audioContext.suspend();
+    await sleep(1000);
+    micListening = false;
+    miclock = false;
+
+    usermic.close();
+}
+let isFirstTime = true;
+let usermic = null;
+let monitorheight = 80;
+let micMonitoring = false;
+
+function loadingAudion(button){
+
+
+
+
+    // bind the interface
+              
+
+    const micButton = document.querySelector("tone-mic-button");
+    const mButton = document.getElementById("microphone");
+
+    micButton.supported = Tone.UserMedia.supported;
+    // micButton.addEventListener("touch", () => {
+        
     // micButton.addEventListener("close", () => {
     //     usermic.close();
     // });
