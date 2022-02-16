@@ -13,7 +13,7 @@ micListening = false;
 async function onMicrophoneGranted(stream) {
     if (true) {
         miclock = true;
-        audioContext = new AudioContext()
+        audioContext = new AudioContext();
         await audioContext.audioWorklet.addModule('/nftart/scripts/vumeter-processor.js')
         let microphone = audioContext.createMediaStreamSource(stream)
 
@@ -79,7 +79,7 @@ function loadingAudion(button){
 
     micButton.supported = Tone.UserMedia.supported;
     micButton.addEventListener("click", () => {
-        Tone.context.resume();
+        Tone.setContext(audioContext);
 
         if(isFirstTime){
             usermic = new Tone.UserMedia();
@@ -126,6 +126,7 @@ function loadingAudion(button){
 
     mButton.addEventListener("click", () => {
         if(micListening == false){
+            // AudioContext.resume();
             navigator.mediaDevices.getUserMedia({ audio: true, video: false })
             .then(onMicrophoneGranted)
             .catch(onMicrophoneDenied);   
