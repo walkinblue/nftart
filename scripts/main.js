@@ -27,27 +27,27 @@ function loading(){
     // console.log(lit_element_1.css);
 
 
-    let sbutton = document.getElementsByTagName("tone-mic-button")[0].shadowRoot.querySelector("tone-button").shadowRoot.querySelector("button");
+    // let sbutton = document.getElementsByTagName("tone-mic-button")[0].shadowRoot.querySelector("tone-button").shadowRoot.querySelector("button");
 
-    sbutton.style.backgroundColor="#ffffff";
-    sbutton.style.width = 120;
-    sbutton.style.height = 30;
-    sbutton.style.marginTop = 9;
-    sbutton.style.border = "none";
-    sbutton.style.padding = 0;
-    sbutton.style.color = "#444444";
-    sbutton.style.boxShadow = "";
-    sbutton.style.outline = "";
+    // sbutton.style.backgroundColor="#ffffff";
+    // sbutton.style.width = 120;
+    // sbutton.style.height = 30;
+    // sbutton.style.marginTop = 9;
+    // sbutton.style.border = "none";
+    // sbutton.style.padding = 0;
+    // sbutton.style.color = "#444444";
+    // sbutton.style.boxShadow = "";
+    // sbutton.style.outline = "";
     
     
-    sbutton.addEventListener("click", function () {
-        if(micListening == false){
-            this.style.backgroundColor = "#ff8888";
-        }else{
-            this.style.backgroundColor = "#ffffff";  
-        }
+    // sbutton.addEventListener("click", function () {
+    //     if(micListening == false){
+    //         this.style.backgroundColor = "#ff8888";
+    //     }else{
+    //         this.style.backgroundColor = "#ffffff";  
+    //     }
 
-    });
+    // });
 
 }
 

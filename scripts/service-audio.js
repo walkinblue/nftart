@@ -28,7 +28,6 @@ async function onMicrophoneGranted(stream) {
             setVolumns((_volume * 100) / _sensibility)
         }
         microphone.connect(node).connect(audioContext.destination);
-        isFirstTime = false;
         micListening = true;
         miclock = false;
         
@@ -77,67 +76,57 @@ function loadingAudion(button){
     const micButton = document.querySelector("tone-mic-button");
     const mButton = document.getElementById("microphone");
 
+    micButton.supported = Tone.UserMedia.supported;
+    micButton.addEventListener("open", () => {
+        if(isFirstTime){
+            usermic = new Tone.UserMedia();
+
+            const micFFT = new Tone.FFT();
+            usermic.connect(micFFT);
+            fft({
+                tone: micFFT,
+                parent: document.querySelector("#fftmonitor"),
+                height: monitorheight,
+            });
+    
+            const micMeter = new Tone.Meter();
+            usermic.connect(micMeter);
+            meter({
+                tone: micMeter,
+                parent: document.querySelector("#metermonitor"),
+                height: monitorheight,
+            });
+    
+            const micWaveform = new Tone.Waveform();
+            usermic.connect(micWaveform);
+            waveform({
+                tone: micWaveform,
+                parent: document.querySelector("#wavemonitor"),
+                height: monitorheight,
+            });
+
+            usermic.open();    
+            isFirstTime = false;
+        }else{
+            usermic.open();    
+        }
+    });
+    micButton.addEventListener("close", () => {
+        usermic.close();
+    });
     mButton.addEventListener("click", () => {
         if(micListening == false){
             navigator.mediaDevices.getUserMedia({ audio: true, video: false })
             .then(onMicrophoneGranted)
             .catch(onMicrophoneDenied);   
-            
-            if(isFirstTime){
-                setTimeout(function(){
-                    usermic = new Tone.UserMedia();
-
-                    const micFFT = new Tone.FFT();
-                    usermic.connect(micFFT);
-                    fft({
-                        tone: micFFT,
-                        parent: document.querySelector("#fftmonitor"),
-                        height: monitorheight,
-                    });
-            
-                    const micMeter = new Tone.Meter();
-                    usermic.connect(micMeter);
-                    meter({
-                        tone: micMeter,
-                        parent: document.querySelector("#metermonitor"),
-                        height: monitorheight,
-                    });
-            
-                    const micWaveform = new Tone.Waveform();
-                    usermic.connect(micWaveform);
-                    waveform({
-                        tone: micWaveform,
-                        parent: document.querySelector("#wavemonitor"),
-                        height: monitorheight,
-                    });
-                    usermic.open();    
-                },1000)
-            }else{
-                usermic.open();
-            }
-
-    
-
-
+                
+            mButton.classList.add("recording");
         }else{
             onMicrophoneSuspend();
-
-            usermic.close()
+            mButton.classList.remove("recording");
         }
             // usermic.open();
     });
-
-    micButton.supported = Tone.UserMedia.supported;
-    micButton.addEventListener("open", () => {
-        // alert(1);
-
-        
-    });
-
-    micButton.addEventListener("close", () => {
-        usermic.close()
-    });
-    
     
 
 }

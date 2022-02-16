@@ -12,8 +12,7 @@
     <body onload="loading()">
         <div id="operations" class="operations">
             <button  id="microphone" class="audio">
-                <tone-mic-button >
-                </tone-mic-button>
+                开始倾听
             </button>
             <div>
                 <div class="title">放大倍数(<text id="enlargeSpeedValue">40</text>)</div>
@@ -69,6 +68,11 @@
             </canvas>    
         </div>
         <div id="monitors" class="monitors"> 
+            <button id="monitoring" class="monitoring">
+                <tone-mic-button >
+                </tone-mic-button>    
+            </button>
+
             <div id="fftmonitor" class="fftmonitor"></div>
             <div id="metermonitor" class="fftmonitor"></div>
             <div id="wavemonitor" class="fftmonitor"></div>
