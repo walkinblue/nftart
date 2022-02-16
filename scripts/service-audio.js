@@ -78,7 +78,7 @@ function loadingAudion(button){
     const mButton = document.getElementById("microphone");
 
     micButton.supported = Tone.UserMedia.supported;
-    micButton.addEventListener("click", () => {
+    micButton.addEventListener("touch", () => {
         Tone.setContext(audioContext);
 
         if(isFirstTime){
