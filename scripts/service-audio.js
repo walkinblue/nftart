@@ -61,7 +61,7 @@ async function onMicrophoneSuspend(){
 }
 let isFirstTime = true;
 let usermic = null;
-let monitorheight = 160;
+let monitorheight = 80;
 
 function loadingAudion(button){
 

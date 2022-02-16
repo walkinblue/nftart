@@ -10,19 +10,19 @@ button:focus{
 }
 .title{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 10px;
+    font-size: 14px;
 }
 .folder{
     position: absolute;
-    top: 16px;
+    top: 8px;
     left: 16px;
 
     background-repeat: no-repeat;
     background-size: 32px 32px;
-    background-position: 6px 8px;
+    background-position: 3px 4px;
     background-image: url('/nftart/images/icon-folder@3x.png');
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border: 2px solid #dddddd;
     border-radius: 8px;
     background-color: #ffffff;
@@ -38,7 +38,7 @@ button:focus{
 }
 
 .select{
-    font-size: 10px;
+    font-size: 14px;
 }
 .audio{
     width: 160px;
@@ -60,7 +60,7 @@ button:focus{
     top: 0px;
     left: 0px;
     width: 100%;
-    height: 80;
+    height: 60;
     background-color:#eeeeee;
     border-bottom: 1px solid #dddddd;
     display: flex;
@@ -80,7 +80,7 @@ button:focus{
     position:absolute;
     display: flex;
     width: 100%;
-    height: 180px;
+    height: 80;
     bottom: 0px;
     background-color: #aaaaaa;
     justify-content: center;
@@ -89,7 +89,6 @@ button:focus{
 }
 .fftmonitor{
     width: 33%;
-    height: 160px;
 }
 
 .red{color: #ff0000;}
