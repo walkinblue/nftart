@@ -1,20 +1,10 @@
-
-let isRecording = false;
+isRunning = false;
 function loading(){
-    let height = window.innerHeight;
-    let width = window.innerWidth;
-    //console.log(`${screen.width}, ${window.innerHeight}`);
-    let canvas = document.getElementById('canvas');
-    canvas.height = height;
-    canvas.width = width;
+    resizeCanvas();
+    
     ctx = document.getElementById('canvas').getContext('2d');
 
-    figures = {
-        width: width,
-        height: height,
-        radius: height/200,
-        items: []
-    };
+
 
     flash();
 
@@ -22,15 +12,42 @@ function loading(){
         size: 10
     });
 
-    document.getElementById('microphone').addEventListener('click', () => {
-        activeSound();
-        document.getElementById('microphone').classList.add("recording");
-        isRecording = !isRecording;
-    })
+    loadingAudion(document.getElementById('microphone'));
+    document.getElementById("enlargeSpeed").addEventListener("change", setEnlargeSpeed);
+    document.getElementById("livingTimes").addEventListener("change", setLivingTimes);
+    document.getElementById("edgeNo").addEventListener("change", setEdgeNo);
+    document.getElementById("colorful").addEventListener("change", setColorful);
+    document.getElementById("fadetime").addEventListener("change", setFadetime);
+    document.getElementById("rotateSpeed").addEventListener("change", setRotateSpeed);
+    document.getElementById("folder").addEventListener("click", folding);
+    document.getElementById("bgcolor").addEventListener("change", setBgcolor);
 
-    // activeSound();
-    // startListening();
-    // draw();
-    // setInterval(function(){draw();},1000/60);
+    setColorful({target:{value:document.getElementById("colorful").value}});
+    setBgcolor({target:{value:document.getElementById("bgcolor").value}});
+    // console.log(lit_element_1.css);
+
+
+    let sbutton = document.getElementsByTagName("tone-mic-button")[0].shadowRoot.querySelector("tone-button").shadowRoot.querySelector("button");
+
+    sbutton.style.backgroundColor="#ffffff";
+    sbutton.style.width = 120;
+    sbutton.style.height = 30;
+    sbutton.style.marginTop = 9;
+    sbutton.style.border = "none";
+    sbutton.style.padding = 0;
+    sbutton.style.color = "#444444";
+    sbutton.style.boxShadow = "";
+    sbutton.style.outline = "";
+    
+    
+    sbutton.addEventListener("click", function () {
+        if(micListening == false){
+            this.style.backgroundColor = "#ff8888";
+        }else{
+            this.style.backgroundColor = "#ffffff";  
+        }
+
+    });
 
 }
+
