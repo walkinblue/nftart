@@ -61,6 +61,7 @@ async function onMicrophoneSuspend(){
 let isFirstTime = true;
 let usermic = null;
 let monitorheight = 80;
+let micMonitoring = false;
 
 function loadingAudion(button){
 
@@ -77,7 +78,9 @@ function loadingAudion(button){
     const mButton = document.getElementById("microphone");
 
     micButton.supported = Tone.UserMedia.supported;
-    micButton.addEventListener("open", () => {
+    micButton.addEventListener("click", () => {
+        Tone.context.resume();
+
         if(isFirstTime){
             usermic = new Tone.UserMedia();
 
@@ -107,13 +110,20 @@ function loadingAudion(button){
 
             usermic.open();    
             isFirstTime = false;
-        }else{
+            micMonitoring = true;
+        }else if(micMonitoring == false){
             usermic.open();    
+            micMonitoring = true;
+        }else {
+            usermic.close();
+            micMonitoring = false;
         }
     });
-    micButton.addEventListener("close", () => {
-        usermic.close();
-    });
+    // micButton.addEventListener("close", () => {
+    //     usermic.close();
+    // });
+
+
     mButton.addEventListener("click", () => {
         if(micListening == false){
             navigator.mediaDevices.getUserMedia({ audio: true, video: false })
