@@ -13,11 +13,20 @@ micListening = false;
 async function onMicrophoneGranted(stream) {
     if (isFirstTime) {
         miclock = true;
+
         audioContext = new AudioContext();
+        Tone.setContext(audioContext);
+
         await audioContext.audioWorklet.addModule('/nftart/scripts/vumeter-processor.js')
+        
         let microphone = audioContext.createMediaStreamSource(stream)
 
         const node = new AudioWorkletNode(audioContext, 'vumeter')
+        
+        // node.onprocessorerror(function(e){
+        //     console.log("process error",e)
+        // })
+
         node.port.onmessage  = event => {
             let _volume = 0
             let _sensibility = 5
@@ -32,7 +41,6 @@ async function onMicrophoneGranted(stream) {
         miclock = false;
         
 
-        Tone.setContext(audioContext);
 
         usermic = new Tone.UserMedia();
 

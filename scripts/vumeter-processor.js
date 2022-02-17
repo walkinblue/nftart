@@ -21,11 +21,14 @@ registerProcessor('vumeter', class extends AudioWorkletProcessor {
     return this._updateIntervalInMS / 1000 * sampleRate;
   }
 
+  boolean 
   process (inputs, outputs, parameters) {
     const input = inputs[0];
 
-      if (input.length > 0) {
-      const samples = input[0];
+    console.log("process input"+inputs.length+","+input.length + ", ");
+    
+    if (input.length > 0) {
+        const samples = input[0];
       let sum = 0;
       let rms = 0;
 
@@ -40,6 +43,8 @@ registerProcessor('vumeter', class extends AudioWorkletProcessor {
         this._nextUpdateFrame += this.intervalInFrames;
         this.port.postMessage({volume: this._volume});
       }
+    }else{
+      return true;
     }
     
     return true;
