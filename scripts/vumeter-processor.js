@@ -37,11 +37,11 @@ registerProcessor('vumeter', class extends AudioWorkletProcessor {
 
       rms = Math.sqrt(sum / samples.length);
       this._volume = Math.max(rms, this._volume * SMOOTHING_FACTOR);
-
+      
       this._nextUpdateFrame -= samples.length;
       if (this._nextUpdateFrame < 0) {
         this._nextUpdateFrame += this.intervalInFrames;
-        this.port.postMessage({volume: this._volume});
+        this.port.postMessage({volume: this._volume, inputs: inputs.length, input: input.length});
       }
     }else{
       this.port.postMessage({volume: -99});

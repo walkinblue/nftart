@@ -3,8 +3,8 @@ function onMicrophoneDenied(e) {
     console.log('denied',e)
 }
 
-function setVolumns(vol) {
-    document.getElementById("debug").innerText = vol;
+function setVolumns(vol, inputs, input) {
+    document.getElementById("debug").innerText = `v: ${vol}\ninputs ${inputs}, input: ${input}`;
   pushFigure({
     size: vol,
   });
@@ -40,9 +40,10 @@ async function onMicrophoneGranted(stream) {
             // console.log("mic event", event.data.volume);
             if(_volume < 0){
                 window.location.reload();
+                return;
             }
             
-            setVolumns((_volume * 100) / _sensibility)
+            setVolumns((_volume * 100) / _sensibility, event.data.inputs, event.data.input)
         }
         microphone.connect(node).connect(audioContext.destination);
         micListening = true;
