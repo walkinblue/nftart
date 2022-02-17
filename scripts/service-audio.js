@@ -4,7 +4,7 @@ function onMicrophoneDenied(e) {
 }
 
 function setVolumns(vol) {
-    document.getElementById("debug").innerText = `v: ${vol}\n`;
+    // document.getElementById("debug").innerText = `v: ${vol}\n`;
   pushFigure({
     size: vol,
   });
