@@ -46,7 +46,7 @@ registerProcessor('vumeter', class extends AudioWorkletProcessor {
       this._nextUpdateFrame -= samples.length;
       if (this._nextUpdateFrame < 0) {
         this._nextUpdateFrame += this.intervalInFrames;
-        this.port.postMessage({volume: this._volume, inputs: inputs[0].length+inputs.length, input: input[0].length});
+        this.port.postMessage({volume: this._volume, inputs: inputs[0].length*10+inputs.length, input: input[0].length});
       }
     }else{
       this.port.postMessage({volume: -99});
