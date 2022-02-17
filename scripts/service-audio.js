@@ -80,7 +80,7 @@ async function onMicrophoneGranted(stream) {
                 height: monitorheight,
             });
             usermic.connect(node);
-            usermic.connect(audioContext.destination);
+            // usermic.connect(audioContext.destination);
             usermic.open();    
 
             isFirstTime = false;
