@@ -32,16 +32,19 @@ registerProcessor('vumeter', class extends AudioWorkletProcessor {
       let sum = 0;
       let rms = 0;
 
-      for (let i = 0; i < samples.length; ++i)
+      let maxVolume = input[0][0];
+      for (let i = 0; i < samples.length; ++i){
         sum += samples[i] * samples[i];
+        maxVolume = Math.max(maxVolume, samples[i]);
+      }
 
       rms = Math.sqrt(sum / samples.length);
-      this._volume = Math.max(rms, this._volume * SMOOTHING_FACTOR);
+      this._volume = Math.max(rms, maxVolume * SMOOTHING_FACTOR);
       
       this._nextUpdateFrame -= samples.length;
       if (this._nextUpdateFrame < 0) {
         this._nextUpdateFrame += this.intervalInFrames;
-        this.port.postMessage({volume: this._volume, inputs: inputs.length, input: input.length});
+        this.port.postMessage({volume: this._volume, inputs: inputs[0].length, input: input[0].length});
       }
     }else{
       this.port.postMessage({volume: -99});
