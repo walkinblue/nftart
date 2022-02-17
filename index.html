@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <script src="/nftart/scripts/service-audio.js"></script>
         <script src="/nftart/scripts/service-canvas.js"></script>
         <script src="/nftart/scripts/service-operation.js"></script>
@@ -15,11 +16,15 @@
                 开始倾听
             </button>
             <div>
-                <div class="title">放大倍数(<text id="enlargeSpeedValue">40</text>)</div>
+                <div class="title">音量放大倍数(<text id="volumeTimesValue">1.5</text>)</div>
+                <input id="volumeTimes" type="range" max="3" min="0.5" value="1.5" step="0.5">
+            </div>
+            <div>
+                <div class="title">大小变化速度(<text id="enlargeSpeedValue">40</text>)</div>
                 <input id="enlargeSpeed" type="range" max="200" min="2" value="40">
             </div>
             <div>
-                <div class="title">停留时长(<text id="livingTimesValue">1600</text>)</div>
+                <div class="title">基本停留时长(<text id="livingTimesValue">1600</text>)</div>
                 <input id="livingTimes" type="range" max="5000" min="100" value="1600">
             </div>
             <div>
@@ -31,8 +36,20 @@
                 <input id="rotateSpeed" type="range" max="16" min="1" value="4">
             </div>
             <div>
-                <div class="title">图形边数(<text id="edgeNoValue">5</text>)</div>
-                <input id="edgeNo" type="range" max="16" min="3" value="5">
+                <div class="title">图形边数</div>
+                <select id="edgeNo" class="select">
+                    <option  value="3">三角形</option>
+                    <option  value="4">四角星</option>
+                    <option selected value="5">五角星</option>
+                    <option  value="6">六角星</option>
+                    <option  value="7">七角星</option>
+                    <option  value="8">八角星</option>
+                    <option  value="9">九角星</option>
+                    <option  value="10">十角星</option>
+                    <option  value="11">十一角星</option>
+                    <option  value="12">十二角星</option>
+                    <option value="*">随机</option>
+                </select>
             </div>
             <div>
                 <div class="title">图形颜色</div>

@@ -1,6 +1,6 @@
 let audioContext
-function onMicrophoneDenied() {
-    console.log('denied')
+function onMicrophoneDenied(e) {
+    console.log('denied',e)
 }
 
 function setVolumns(vol) {
@@ -13,11 +13,6 @@ micListening = false;
 watchRefresh = false;
 node = null;
 async function onMicrophoneGranted(stream) {
-
-    if(node != null && node.isBroken){
-        console.log("reload page");
-        window.location.reload();
-    }
 
     if (isFirstTime) {
         miclock = true;
@@ -89,13 +84,14 @@ async function onMicrophoneGranted(stream) {
         }
         if(miclock)return;
         miclock = true;
-        let result = await audioContext.resume();
+        await audioContext.resume();
+        usermic.open();    
+        
         await sleep(1000);
         micListening = true;
-        console.log("audio context resumed.." + result);
+        console.log("audio context resumed..");
         miclock = false;
 
-        usermic.open();    
     }
 }
 async function onMicrophoneSuspend(){
@@ -107,11 +103,11 @@ async function onMicrophoneSuspend(){
     console.log("audio context suspend..");
     miclock = true;
     await audioContext.suspend();
+    usermic.close();
     await sleep(1000);
     micListening = false;
     miclock = false;
 
-    usermic.close();
 }
 let isFirstTime = true;
 let usermic = null;

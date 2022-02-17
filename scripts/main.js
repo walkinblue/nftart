@@ -19,6 +19,7 @@ function loading(){
     document.getElementById("colorful").addEventListener("change", setColorful);
     document.getElementById("fadetime").addEventListener("change", setFadetime);
     document.getElementById("rotateSpeed").addEventListener("change", setRotateSpeed);
+    document.getElementById("volumeTimes").addEventListener("change", setVolumeTimes);
     document.getElementById("folder").addEventListener("click", folding);
     document.getElementById("bgcolor").addEventListener("change", setBgcolor);
 

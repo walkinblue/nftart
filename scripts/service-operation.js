@@ -13,7 +13,12 @@ function setLivingTimes(e){
 function setEdgeNo(e){
     console.log("e "+e.target.value);
     edgeNo = e.target.value;
-    document.getElementById("edgeNoValue").innerText = e.target.value;
+    // document.getElementById("edgeNoValue").innerText = e.target.value;
+}
+function setVolumeTimes(e){
+    console.log("e "+e.target.value);
+    volumeTimes = e.target.value;
+    document.getElementById("volumeTimesValue").innerText = e.target.value;
 }
 function setColorful(e){
     colorful = e.target.value

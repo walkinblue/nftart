@@ -5,6 +5,7 @@ let colorful = "rgba(0,1,1,#)";
 let fadetime = 3000;
 let rotateSpeed = 4
 let background = "rgba(255,255,255,1)";
+let volumeTimes = 1.5;
 const bpm = 429;
 
 function drawStar(ctx, star, time){
@@ -111,12 +112,12 @@ var figures = {
 
 function pushFigure(data){
     // console.log("push figure " + data.size);
-    let size = data.size;
+    let size = data.size*volumeTimes;
     if(size == 0)return;
     // return;
     let figure = {
         radius: figures.radius,
-        edge: edgeNo,
+        edge: convertEdge(edgeNo),
         x: Math.floor(Math.random()*figures.width),
         y: Math.floor(Math.random()*figures.height),
         angle: Math.floor(Math.random()*360),
@@ -128,6 +129,12 @@ function pushFigure(data){
     };
 
     figures.items.push(figure);
+}
+function convertEdge(edgeNo){
+    if(edgeNo == "*"){
+        return Math.floor(Math.random()*10) + 3;
+    }
+    return parseInt(edgeNo);
 }
 function convertToColor(s){
     let size = Math.floor(s);
