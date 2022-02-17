@@ -19,7 +19,7 @@ async function onMicrophoneGranted(stream) {
         miclock = true;
 
         audioContext = new AudioContext();
-        Tone.setContext(audioContext);
+        // Tone.setContext(audioContext);
 
         await audioContext.audioWorklet.addModule('/nftart/scripts/vumeter-processor.js')
         
@@ -51,33 +51,33 @@ async function onMicrophoneGranted(stream) {
         
 
 
-        usermic = new Tone.UserMedia();
+        // usermic = new Tone.UserMedia();
 
-            const micFFT = new Tone.FFT();
-            usermic.connect(micFFT);
-            fft({
-                tone: micFFT,
-                parent: document.querySelector("#fftmonitor"),
-                height: monitorheight,
-            });
+        //     const micFFT = new Tone.FFT();
+        //     usermic.connect(micFFT);
+        //     fft({
+        //         tone: micFFT,
+        //         parent: document.querySelector("#fftmonitor"),
+        //         height: monitorheight,
+        //     });
     
-            const micMeter = new Tone.Meter();
-            usermic.connect(micMeter);
-            meter({
-                tone: micMeter,
-                parent: document.querySelector("#metermonitor"),
-                height: monitorheight,
-            });
+        //     const micMeter = new Tone.Meter();
+        //     usermic.connect(micMeter);
+        //     meter({
+        //         tone: micMeter,
+        //         parent: document.querySelector("#metermonitor"),
+        //         height: monitorheight,
+        //     });
     
-            const micWaveform = new Tone.Waveform();
-            usermic.connect(micWaveform);
-            waveform({
-                tone: micWaveform,
-                parent: document.querySelector("#wavemonitor"),
-                height: monitorheight,
-            });
+        //     const micWaveform = new Tone.Waveform();
+        //     usermic.connect(micWaveform);
+        //     waveform({
+        //         tone: micWaveform,
+        //         parent: document.querySelector("#wavemonitor"),
+        //         height: monitorheight,
+        //     });
 
-            usermic.open();    
+        //     usermic.open();    
             isFirstTime = false;
     }else{
         let loop = 5;

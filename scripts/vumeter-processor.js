@@ -25,7 +25,7 @@ registerProcessor('vumeter', class extends AudioWorkletProcessor {
   process (inputs, outputs, parameters) {
     const input = inputs[0];
 
-    console.log("process input"+inputs.length+","+input.length + ", ");
+    //console.log("process input"+inputs.length+","+input.length + ", ");
     
     if (input.length > 0) {
         const samples = input[0];
