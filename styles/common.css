@@ -67,6 +67,14 @@ button:focus{
     width: 80;
     height: 40;
 }
+.debug{
+    position:absolute;
+    top: 100;
+    left: 100;
+    width: 200;
+    height: 200;
+    background-color: #ffffff;
+}
 .operations{
     position:absolute;
     top: 0px;
