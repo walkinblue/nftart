@@ -10,7 +10,15 @@ function setVolumns(vol) {
 }
 miclock = false;
 micListening = false;
+watchRefresh = false;
+node = null;
 async function onMicrophoneGranted(stream) {
+
+    if(node != null && node.isBroken){
+        console.log("reload page");
+        window.location.reload();
+    }
+
     if (isFirstTime) {
         miclock = true;
 
@@ -21,7 +29,7 @@ async function onMicrophoneGranted(stream) {
         
         let microphone = audioContext.createMediaStreamSource(stream)
 
-        const node = new AudioWorkletNode(audioContext, 'vumeter')
+        node = new AudioWorkletNode(audioContext, 'vumeter')
         
         // node.onprocessorerror(function(e){
         //     console.log("process error",e)
@@ -33,7 +41,11 @@ async function onMicrophoneGranted(stream) {
             if (event.data.volume)
                 _volume = event.data.volume;
             
-            // console.log("mic event", event.data);
+            // console.log("mic event", event.data.volume);
+            if(_volume < 0){
+                window.location.reload();
+            }
+            
             setVolumns((_volume * 100) / _sensibility)
         }
         microphone.connect(node).connect(audioContext.destination);

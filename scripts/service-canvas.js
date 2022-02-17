@@ -2,9 +2,10 @@ let enlargeSpeed = 40;
 let livingTimes = 1000;
 let edgeNo = 5;
 let colorful = "rgba(0,1,1,#)";
-let fadetime = 3000;
+let fadetime = 429*6;
 let rotateSpeed = 4
 let background = "rgba(255,255,255,1)";
+const bpm = 429;
 
 function drawStar(ctx, star, time){
     let radius = star.radius;
@@ -16,15 +17,17 @@ function drawStar(ctx, star, time){
     let color = star.color;
     let born = star.born;
     let living = star.living;
+    let rotateDirection = star.rotateDirection;
 
     let fadeRate = (born + living + fadetime- time.getTime()) / fadetime;
     
+    // console.log(`rotateDirection: ${rotateDirection}`);
     if(fadeRate > 1) fadeRate = 1;
     else if(fadeRate < 0)fadeRate = 0;
     color = replaceAlpha(color, fadeRate);
 
-    let enlarge = (time - lastTime)*enlargeSpeed/100000 + 1.0;    
-    let rotateAngle = (((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds())*rotateSpeed + initAngle;
+    let enlarge = (time - lastTime)*enlargeSpeed/(bpm*400) + 1.0;    
+    let rotateAngle = (((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds())*rotateSpeed*rotateDirection + initAngle;
     let inRadius = radius/2;
     let lineWidth = radius/25;
     let horn = edge; 
@@ -91,8 +94,8 @@ function flash(){
         if( born + living + fadetime < time.getTime()){
             // console.log("lasttime: " + born + ", living " + living + ", timstamp: "+ (time.getTime() - born));
             figures.items.splice(i,1);
-        }else if(radius > figures.width){
-            figures.items.splice(i,1);
+        // }else if(radius > figures.width){
+        //     figures.items.splice(i,1);
         }else{
             // console.log("flash item drawing" );
             drawStar(ctx, item, time);
@@ -121,6 +124,7 @@ function pushFigure(data){
         lastTime: Date.now(),
         born: Date.now(),
         color: convertToColor(size),
+        rotateDirection: Math.floor(Math.random()*2)*2-1,
     };
 
     figures.items.push(figure);
@@ -146,6 +150,10 @@ function convertToColor(s){
     return replaceColor(colorful, (15-size)*17);
 }
 function replaceColor(template, c){
+    if(template == "*"){
+        return "rgba("+Math.floor(Math.random()*2)*c+","+Math.floor(Math.random()*2)*c+","+Math.floor(Math.random()*2)*c+",1)";
+    }
+
     return template.replace(/1/g,c+"").replace("#", "1");
 }
 function replaceAlpha(color, a){
