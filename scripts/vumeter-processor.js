@@ -25,31 +25,26 @@ registerProcessor('vumeter', class extends AudioWorkletProcessor {
   process (inputs, outputs, parameters) {
     const input = inputs[0];
 
-    //console.log("process input"+inputs.length+","+input.length + ", ");
+    console.log("process input"+inputs.length+","+input.length + ", ");
     
     if (input.length > 0) {
         const samples = input[0];
       let sum = 0;
       let rms = 0;
 
-      // let maxVolume = input[0][0];
-      let count = 0; 
-      for (let i = 0; i < samples.length; ++i){
+      for (let i = 0; i < samples.length; ++i)
         sum += samples[i] * samples[i];
-        if(samples[i] != 0) count++;
-        // maxVolume = Math.max(maxVolume, samples[i]);
-      }
 
-      rms = Math.sqrt(sum / count);
-      this._volume = rms;//Math.max(rms,this._volume*0.8);
-      
+      rms = Math.sqrt(sum / samples.length);
+      this._volume = Math.max(rms, this._volume * SMOOTHING_FACTOR);
+
       this._nextUpdateFrame -= samples.length;
       if (this._nextUpdateFrame < 0) {
         this._nextUpdateFrame += this.intervalInFrames;
-        this.port.postMessage({volume: this._volume, inputs: count, input: input[0].length});
+        this.port.postMessage({volume: this._volume});
       }
     }else{
-      // this.port.postMessage({volume: -99});
+      this.port.postMessage({volume: this._volume});
       // console.log("reload window");
       return true;
     }

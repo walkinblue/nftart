@@ -3,8 +3,8 @@ function onMicrophoneDenied(e) {
     console.log('denied',e)
 }
 
-function setVolumns(vol, inputs, input) {
-    document.getElementById("debug").innerText = `v: ${vol}\ninputs ${inputs}, input: ${input}\n`;
+function setVolumns(vol) {
+    document.getElementById("debug").innerText = `v: ${vol}\n`;
   pushFigure({
     size: vol,
   });
@@ -23,7 +23,7 @@ async function onMicrophoneGranted(stream) {
 
         await audioContext.audioWorklet.addModule('/nftart/scripts/vumeter-processor.js')
         
-        let microphone = audioContext.createMediaStreamSource(stream)
+        // let microphone = audioContext.createMediaStreamSource(stream)
 
         node = new AudioWorkletNode(audioContext, 'vumeter')
         
@@ -43,9 +43,9 @@ async function onMicrophoneGranted(stream) {
                 return;
             }
             
-            setVolumns((_volume * 100) / _sensibility, event.data.inputs, event.data.input)
+            setVolumns((_volume * 100) / _sensibility)
         }
-        microphone.connect(node).connect(audioContext.destination);
+        // microphone.connect(node).connect(audioContext.destination);
         micListening = true;
         miclock = false;
         
@@ -53,6 +53,8 @@ async function onMicrophoneGranted(stream) {
 
         Tone.setContext(audioContext);
         usermic = new Tone.UserMedia();
+        usermic.connect(node)
+
 
             const micFFT = new Tone.FFT();
             usermic.connect(micFFT);
@@ -77,8 +79,10 @@ async function onMicrophoneGranted(stream) {
                 parent: document.querySelector("#wavemonitor"),
                 height: monitorheight,
             });
-
+            usermic.connect(node);
+            usermic.connect(audioContext.destination);
             usermic.open();    
+
             isFirstTime = false;
     }else{
         let loop = 5;
