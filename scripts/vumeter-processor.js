@@ -49,7 +49,7 @@ registerProcessor('vumeter', class extends AudioWorkletProcessor {
         this.port.postMessage({volume: this._volume, inputs: count, input: input[0].length});
       }
     }else{
-      this.port.postMessage({volume: -99});
+      // this.port.postMessage({volume: -99});
       // console.log("reload window");
       return true;
     }
