@@ -119,3 +119,12 @@ button:focus{
 .lblue{color: #00ffff;}
 .purple{color: #ff00ff;}
 .black{color: #000000;}
+
+.fftdisplay{
+    width: 300;
+    height: 100;;
+}
+.fftcanvas{
+    width: 300;
+    height: 100;
+}

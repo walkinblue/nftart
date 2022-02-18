@@ -17,10 +17,10 @@
             <button  id="microphone" class="audio">
                 开始倾听
             </button>
-            <div>
+            <!-- <div>
                 <div class="title">音量放大倍数(<text id="volumeTimesValue">1.5</text>)</div>
-                <input id="volumeTimes" type="range" max="3" min="0.5" value="1.5" step="0.5">
-            </div>
+                <input id="volumeTimes" type="range" max="3" min="0.5" value="1" step="0.5">
+            </div> -->
             <div>
                 <div class="title">大小变化速度(<text id="enlargeSpeedValue">40</text>)</div>
                 <input id="enlargeSpeed" type="range" max="200" min="2" value="40">
@@ -53,7 +53,7 @@
                     <option value="*">随机</option>
                 </select>
             </div>
-            <div>
+            <!-- <div>
                 <div class="title">图形颜色</div>
                 <select id="colorful" class="select">
                     <option  value="rgba(0,1,1,#)">青色</option>
@@ -78,7 +78,7 @@
                     <option value="rgba(255,255,0,1)">黄色</option>
                     <option value="rgba(255,0,255,1)">紫色</option>
                 </select>
-            </div>
+            </div> -->
 
         </div>
         <div id="folder" class="folder"></div>
@@ -92,7 +92,9 @@
                 <tone-mic-button >
                 </tone-mic-button>    
             </button>
-
+            <div class="fftdisplay">
+                <canvas id="fftcanvas"></canvas>
+            </div>
             <div id="fftmonitor" class="fftmonitor"></div>
             <div id="metermonitor" class="fftmonitor"></div>
             <div id="wavemonitor" class="fftmonitor"></div>

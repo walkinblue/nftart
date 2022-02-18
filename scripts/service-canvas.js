@@ -5,7 +5,7 @@ let colorful = "rgba(0,1,1,#)";
 let fadetime = 3000;
 let rotateSpeed = 4
 let background = "rgba(255,255,255,1)";
-let volumeTimes = 1.5;
+let volumeTimes = 1;
 const bpm = 429;
 
 function drawStar(ctx, star, time){
@@ -111,8 +111,10 @@ var figures = {
 };
 
 function pushFigure(data){
-    // console.log("push figure " + data.size);
+    // console.log(`pushFigure: ${data.color}`);
     let size = data.size*volumeTimes;
+    let color = data.color;
+    
     if(size == 0)return;
     // return;
     let figure = {
@@ -124,7 +126,7 @@ function pushFigure(data){
         living: livingTimes*size,
         lastTime: Date.now(),
         born: Date.now(),
-        color: convertToColor(size),
+        color: color,
         rotateDirection: Math.floor(Math.random()*2)*2-1,
     };
 
@@ -164,6 +166,7 @@ function replaceColor(template, c){
     return template.replace(/1/g,c+"").replace("#", "1");
 }
 function replaceAlpha(color, a){
+    // console.log(`replace alpha: ${color}, ${a}`);
     return color.replace(/,[0-9.]+\)/g, ","+a+")");
 }
 function reverseColor(color){

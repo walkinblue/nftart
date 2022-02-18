@@ -9,22 +9,23 @@ function loading(){
     flash();
 
     pushFigure({
-        size: 10
+        size: 10,
+        color: "hsla{240,100%,80%,1}"
     });
 
     loadingAudion(document.getElementById('microphone'));
     document.getElementById("enlargeSpeed").addEventListener("change", setEnlargeSpeed);
     document.getElementById("livingTimes").addEventListener("change", setLivingTimes);
     document.getElementById("edgeNo").addEventListener("change", setEdgeNo);
-    document.getElementById("colorful").addEventListener("change", setColorful);
+    // document.getElementById("colorful").addEventListener("change", setColorful);
     document.getElementById("fadetime").addEventListener("change", setFadetime);
     document.getElementById("rotateSpeed").addEventListener("change", setRotateSpeed);
-    document.getElementById("volumeTimes").addEventListener("change", setVolumeTimes);
+    // document.getElementById("volumeTimes").addEventListener("change", setVolumeTimes);
     document.getElementById("folder").addEventListener("click", folding);
-    document.getElementById("bgcolor").addEventListener("change", setBgcolor);
+    // document.getElementById("bgcolor").addEventListener("change", setBgcolor);
 
-    setColorful({target:{value:document.getElementById("colorful").value}});
-    setBgcolor({target:{value:document.getElementById("bgcolor").value}});
+    // setColorful({target:{value:document.getElementById("colorful").value}});
+    // setBgcolor({target:{value:document.getElementById("bgcolor").value}});
     // console.log(lit_element_1.css);
 
 
