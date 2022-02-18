@@ -114,7 +114,7 @@ async function procesLoop(){
         let saturation = 100  - barHeight/256*100;
         let c = Math.floor(Math.sqrt((256 - barHeight)/256)*256);
 
-
+        let defaultColor = `rgba(${c},${c},${c},1)`;;
         if(i < minManIndex){
             color = `rgba(${c},${c},${c},1)`;
             lowSum ++;
@@ -126,40 +126,35 @@ async function procesLoop(){
             color = `rgba(${c},${hc},${hc},1)`;
             womanSum ++;
         }else if(i > maxWomanIndex){
-            color = `rgba(${c},${c},${c},1)`;
+            color = defaultColor;
             ultraSum ++;
         }
-
-        // if(i < manIndex){
-        //     hue = zeroHue + (manHue - zeroHue)/manIndex * i;
-        //     color = `hsla(${hue},100%, ${saturation}%,1)`;
-        // }else if(i>= manIndex && i < womanIndex){
-        //     hue = manHue + (womanHue - manHue)/(womanIndex-manIndex) * (i-manIndex);
-        //     color = `hsla(${hue},100%, ${saturation}%,1)`;
-        // }else if(i >= womanIndex && i < finalIndex){
-        //     hue = womanHue + (zeroHue - womanHue + 360)/(finalIndex - womanIndex)*(i-womanIndex);
-        //     color = `hsla(${hue},100%, ${saturation}%,1)`;
-        // }else if(i >= finalIndex ){
-        //     hue = zeroHue + (360 - zeroHue)/(bufferLengthAlt - finalIndex)*(i-finalIndex);
-        //     let c = 256 - barHeight;
-        //     color = `rgba(${c},${c},${c},1)`;
-        // }
-
-
         let size = Math.floor(Math.pow(barHeight/256,2) *16);
-        if((size >= 1)){
+        if(size <=2 ){
+            color = defaultColor;
+        }
+
+
+        if(size >= 1 && i <= maxWomanIndex ){
             pushFigure({
                 color: color,
                 size: Math.floor( size ),
-            });
+            });    
             validNo++;
-
             sizeSum += size;
             if(size > maxPower){
                 maxPower = size;
             }
             if(size < minPower){
                 minPower = size;
+            }
+        }else if( i > maxWomanIndex && size >= 1){
+            if(i % 3 == 0){
+                pushFigure({
+                    color: color,
+                    size: Math.floor( size ),
+                });    
+                validNo++;
             }
         }
 
@@ -178,7 +173,7 @@ async function procesLoop(){
     let rmsPower = Math.floor (Math.sqrt(rmsPowerSum / bufferLengthAlt));
     let avgSize = Math.floor (sizeSum/validNo);
 
-    // console.log(`valid:${validNo},min:${minPower},max:${maxPower},manNo:${manSum},womNo:${womanSum},ultra:${ultraSum},low:${lowSum}`);
+    console.log(`valid:${validNo},min:${minPower},max:${maxPower},manNo:${manSum},womNo:${womanSum},ultra:${ultraSum},low:${lowSum}`);
     // 
 
     // requestAnimationFrame(procesLoop);
@@ -197,24 +192,28 @@ async function processAnalysis(ctx){
     let maxFrequency = analyser.frequencyBinCount * SAMPLE_RATE/FFT_SIZE;
 
 
-    manIndex  = Math.floor(manFreq * FFT_SIZE / SAMPLE_RATE);
-    womanIndex  = Math.floor(womanFreq * FFT_SIZE / SAMPLE_RATE);
-    radiusIndex = Math.floor(radiusFreq  * FFT_SIZE / SAMPLE_RATE);
-    finalIndex = Math.floor(finalFreq  * FFT_SIZE / SAMPLE_RATE);
-    maxIndex = Math.floor(maxFreq  * FFT_SIZE / SAMPLE_RATE);
-    minManIndex = Math.floor(manIndex - radiusIndex);
-    maxManIndex = Math.floor(manIndex + radiusIndex);
-    minWomanIndex = Math.floor(womanIndex - radiusIndex);
-    maxWomanIndex = Math.floor(womanIndex + radiusIndex);
+    // manIndex  = Math.floor(manFreq * FFT_SIZE / SAMPLE_RATE);
+    // womanIndex  = Math.floor(womanFreq * FFT_SIZE / SAMPLE_RATE);
+    // radiusIndex = Math.floor(radiusFreq  * FFT_SIZE / SAMPLE_RATE);
+    // finalIndex = Math.floor(finalFreq  * FFT_SIZE / SAMPLE_RATE);
+    // maxIndex = Math.floor(maxFreq  * FFT_SIZE / SAMPLE_RATE);
+    minManIndex =Math.floor(minManFreq  * FFT_SIZE / SAMPLE_RATE);
+    maxManIndex = Math.floor(maxManFreq  * FFT_SIZE / SAMPLE_RATE);
+    minWomanIndex = Math.floor(minWomanFreq  * FFT_SIZE / SAMPLE_RATE);
+    maxWomanIndex = Math.floor(maxWomanFreg  * FFT_SIZE / SAMPLE_RATE);
     
 
 
-    console.log(`frequence from 0hz to ${maxFrequency}, sampleRate: ${SAMPLE_RATE}, bitCount: ${bufferLengthAlt}`);
-    console.log(`man index : ${manIndex}, , woman index: ${womanIndex}, maxIndex: ${maxIndex} finalInde:${finalIndex}`);
+    // console.log(`frequence from 0hz to ${maxFrequency}, sampleRate: ${SAMPLE_RATE}, bitCount: ${bufferLengthAlt}`);
+    // console.log(`man index : ${manIndex}, , woman index: ${womanIndex}, maxIndex: ${maxIndex} finalInde:${finalIndex}`);
     console.log(`man index from ${minManIndex}, ${maxManIndex}, woman index from ${minWomanIndex}, to ${maxWomanIndex}`);
 
     return analyser;
 }
+let minManFreq = 90;
+let maxManFreq = 200;
+let minWomanFreq = 200;
+let maxWomanFreg = 350;
 
 
 let minManIndex;
@@ -227,15 +226,15 @@ let usermic = null;
 let monitorheight = 80;
 let micMonitoring = false;
 let micListening = false;
+
 let manFreq = 140;
 let womanFreq = 230;
-let radiusFreq = 60;
-let finalFreq = 350;
 let maxFreq = 1000;
-let manHue = 240;
-let womanHue = 60;
-let zeroHue = 180;
-let finalHue = 180;
+
+// let manHue = 240;
+// let womanHue = 60;
+// let zeroHue = 180;
+// let finalHue = 180;
 
 
 async function initAudioNodes(){
