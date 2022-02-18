@@ -3,7 +3,7 @@ let audioContext
 
 
 async function processMonitor(elements){
-    let height = elements.elements;
+    let height = elements.height;
     let fftElement  = elements.fft;
     let meterElement  = elements.meter;
     let waveElement = elements.wave;
@@ -74,12 +74,17 @@ async function processMeter(ctx){
 
 let frequencyArray = null;
 let analysis = null;
-const AWIDTH = 300;
-const AHEIGHT = 100;
+let AWIDTH;
+let AHEIGHT;
 let bufferLengthAlt = null;
 const SAMPLE_RATE = 22050;
 const FFT_SIZE  = 512;
 
+let minManFreq = 70;
+let maxManFreq = 200;
+let minWomanFreq = 200;
+let maxWomanFreq = 350;
+let biasFreq = 0;
 
 async function procesLoop(){
     // console.log("onaudioprocess: "+ 1);
@@ -87,7 +92,7 @@ async function procesLoop(){
 
     let canvasCTX = document.getElementById("fftcanvas").getContext('2d');
     canvasCTX.clearRect(0,0, AWIDTH, AHEIGHT);
-    canvasCTX.fillStyle = 'rgb(255, 255, 255)';
+    canvasCTX.fillStyle = 'rgba(255, 255, 255, 0)';
     canvasCTX.fillRect(0, 0, AWIDTH, AHEIGHT);
 
     let barWidth = (AWIDTH / bufferLengthAlt) * 2.5;
@@ -104,6 +109,11 @@ async function procesLoop(){
     let womanSum =0;
     let ultraSum = 0
 
+    let minManIndex =Math.floor((minManFreq +biasFreq) * FFT_SIZE / SAMPLE_RATE);
+    let maxManIndex = Math.floor((maxManFreq  +biasFreq) * FFT_SIZE / SAMPLE_RATE);
+    let minWomanIndex = Math.floor((minWomanFreq  +biasFreq) * FFT_SIZE / SAMPLE_RATE);
+    let maxWomanIndex = Math.floor((maxWomanFreq  +biasFreq) * FFT_SIZE / SAMPLE_RATE);
+
     for (let i = 0; i < bufferLengthAlt; i++) {
         barHeight = frequencyArray[i];
 
@@ -111,7 +121,7 @@ async function procesLoop(){
 
         let hue = null;
         let color = null;
-        let saturation = 100  - barHeight/256*100;
+        let saturation = AHEIGHT  - barHeight/256*AHEIGHT;
         let c = Math.floor(Math.sqrt((256 - barHeight)/256)*256);
 
         let defaultColor = `rgba(${c},${c},${c},1)`;;
@@ -160,7 +170,7 @@ async function procesLoop(){
 
         canvasCTX.fillStyle = color;
 
-        canvasCTX.fillRect(x, AHEIGHT - size*6, barWidth, size*6);    
+        canvasCTX.fillRect(x, AHEIGHT - size*(AHEIGHT/16), barWidth, size*(AHEIGHT/16));    
 
         avgPowerSum += barHeight;
         rmsPowerSum += barHeight*barHeight;
@@ -173,7 +183,7 @@ async function procesLoop(){
     let rmsPower = Math.floor (Math.sqrt(rmsPowerSum / bufferLengthAlt));
     let avgSize = Math.floor (sizeSum/validNo);
 
-    console.log(`valid:${validNo},min:${minPower},max:${maxPower},manNo:${manSum},womNo:${womanSum},ultra:${ultraSum},low:${lowSum}`);
+    // console.log(`maxman: ${biasFreq}, valid:${validNo},min:${minPower},max:${maxPower},manNo:${manSum},womNo:${womanSum},ultra:${ultraSum},low:${lowSum}`);
     // 
 
     // requestAnimationFrame(procesLoop);
@@ -196,24 +206,15 @@ async function processAnalysis(ctx){
     // womanIndex  = Math.floor(womanFreq * FFT_SIZE / SAMPLE_RATE);
     // radiusIndex = Math.floor(radiusFreq  * FFT_SIZE / SAMPLE_RATE);
     // finalIndex = Math.floor(finalFreq  * FFT_SIZE / SAMPLE_RATE);
-    // maxIndex = Math.floor(maxFreq  * FFT_SIZE / SAMPLE_RATE);
-    minManIndex =Math.floor(minManFreq  * FFT_SIZE / SAMPLE_RATE);
-    maxManIndex = Math.floor(maxManFreq  * FFT_SIZE / SAMPLE_RATE);
-    minWomanIndex = Math.floor(minWomanFreq  * FFT_SIZE / SAMPLE_RATE);
-    maxWomanIndex = Math.floor(maxWomanFreg  * FFT_SIZE / SAMPLE_RATE);
-    
+    // maxIndex = Math.floor(maxFreq  * FFT_SIZE / SAMPLE_RATE);    
 
 
     // console.log(`frequence from 0hz to ${maxFrequency}, sampleRate: ${SAMPLE_RATE}, bitCount: ${bufferLengthAlt}`);
     // console.log(`man index : ${manIndex}, , woman index: ${womanIndex}, maxIndex: ${maxIndex} finalInde:${finalIndex}`);
-    console.log(`man index from ${minManIndex}, ${maxManIndex}, woman index from ${minWomanIndex}, to ${maxWomanIndex}`);
+    // console.log(`man index from ${minManIndex}, ${maxManIndex}, woman index from ${minWomanIndex}, to ${maxWomanIndex}`);
 
     return analyser;
 }
-let minManFreq = 90;
-let maxManFreq = 200;
-let minWomanFreq = 200;
-let maxWomanFreg = 350;
 
 
 let minManIndex;
@@ -328,6 +329,11 @@ function loadingAudion(button){
 
     const micButton = document.querySelector("tone-mic-button");
     const mButton = document.getElementById("microphone");
+    const fftCanvas = document.getElementById("fftcanvas");
+
+    AWIDTH = fftCanvas.width;
+    AHEIGHT = fftCanvas.height;
+    console.log(`fftcanvs width: ${AWIDTH}, height: ${AHEIGHT}`);
 
     micButton.supported = Tone.UserMedia.supported;
     // micButton.addEventListener("touch", () => {

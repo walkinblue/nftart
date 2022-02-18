@@ -45,6 +45,10 @@ function setRotateSpeed(e){
     rotateSpeed = e.target.value
     document.getElementById("rotateSpeedValue").innerText = e.target.value;
 }
+function setBiasFreq(e){
+    console.log("e biasFreq "+e.target.value);
+    biasFreq = e.target.value;
+}
 function folding(){
     console.log("folding");
     if(document.getElementById("operations").style.visibility == "hidden"){

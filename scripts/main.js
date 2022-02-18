@@ -22,6 +22,7 @@ function loading(){
     document.getElementById("rotateSpeed").addEventListener("change", setRotateSpeed);
     // document.getElementById("volumeTimes").addEventListener("change", setVolumeTimes);
     document.getElementById("folder").addEventListener("click", folding);
+    // document.getElementById("biasFreq").addEventListener("change", setBiasFreq);
     // document.getElementById("bgcolor").addEventListener("change", setBgcolor);
 
     // setColorful({target:{value:document.getElementById("colorful").value}});

@@ -54,6 +54,11 @@
                 </select>
             </div>
             <!-- <div>
+                <div class="title">人声频率偏移(Hz)</div>
+                <input id="biasFreq" type="number" value="50" style="width: 50px;">
+            </div> -->
+
+            <!-- <div>
                 <div class="title">图形颜色</div>
                 <select id="colorful" class="select">
                     <option  value="rgba(0,1,1,#)">青色</option>
@@ -82,23 +87,22 @@
 
         </div>
         <div id="folder" class="folder"></div>
-
         <div class="container">
-            <canvas id="canvas" class=".canvas">
+            <canvas id="canvas" class="canvas">
             </canvas>    
         </div>
         <div id="monitors" class="monitors"> 
-            <button id="monitoring" class="monitoring" hidden="true">
-                <tone-mic-button >
-                </tone-mic-button>    
-            </button>
-            <div class="fftdisplay">
-                <canvas id="fftcanvas"></canvas>
+            <div class="fftmonitor">
+                <canvas id="fftcanvas" width="300" height="80"></canvas>
             </div>
             <div id="fftmonitor" class="fftmonitor"></div>
             <div id="metermonitor" class="fftmonitor"></div>
             <div id="wavemonitor" class="fftmonitor"></div>
         </div>
+        <button id="monitoring" class="monitoring" hidden="true">
+            <tone-mic-button >
+            </tone-mic-button>    
+        </button>
 
     </body>
 
