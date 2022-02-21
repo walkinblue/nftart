@@ -42,7 +42,6 @@ async function loadTonejsMonitor(elements){
     }
 
 }
-
 async function audioMonitor(frequencyArray, data){
     let height = data.height;
     let width  = data.width;
@@ -72,9 +71,10 @@ async function audioMonitor(frequencyArray, data){
 
     // console.log(`range:${range} colorStart : ${colorStart}, coloriterator:${coloriterator} `);
 
-    let maxPower = 0;
-    let maxIndex = -1;
     let deltas = [];
+    let peaks = [];
+    let maxpeak = {power:0};
+    
     for (let i = 0; i < range; i++) { 
         let power = frequencyArray[i];
         let size = power/256;//Math.pow(power/256,2);
@@ -90,51 +90,79 @@ async function audioMonitor(frequencyArray, data){
             let delta = frequencyArray[i] - frequencyArray[i+1];
             deltas.push(delta);
         }
-        if(maxPower < power){
-            maxIndex = i;
-            maxPower = power;
+
+        if(i > 0 && i < range -1 && deltas[i-1] < 0 && deltas[i] > 0){
+            let peak = {index:i, power: power};
+
+            let leftWidth = 0;
+            let index = peak.index;
+            for(let i = index-1 ; i >= 0 ; i -- ){
+                if(deltas[i] < 0){
+                    leftWidth++;
+                }else{
+                    break;
+                }
+            }
+            let rightWidth = 0;
+            for(let i = index ; i < range - 1 ; i++ ){
+                if(deltas[i] > 0){
+                    rightWidth++;
+                }else{
+                    break;
+                }
+            }
+            peak.left = (index - leftWidth)* SAMPLE_RATE/FFT_SIZE;
+            peak.right = (index + rightWidth)* SAMPLE_RATE/FFT_SIZE;
+            peak.width = peak.right - peak.left;
+            peak.freq = index * SAMPLE_RATE/FFT_SIZE;
+            peak.leftSlop = (frequencyArray[index] - frequencyArray[index - leftWidth])/(leftWidth*SAMPLE_RATE/FFT_SIZE);
+            peak.rightSlop = (frequencyArray[index + rightWidth] - frequencyArray[index])/(rightWidth*SAMPLE_RATE/FFT_SIZE);
+            
+            if(peak.power > maxpeak.power){
+                maxpeak = peak;
+            }
+
+            peaks.push(peak);
+            // if(peak.length > 30 && peak.leftSlop > 0.8 && peak.rightSlop < - 0.8)
         }
     
     }
 
-    if(maxIndex < 0){
-        return;
+    //Ordering
+    for(let i = 0 ; i < peaks.length; i ++ ){
+        for(let j = i ; j > 0 ; j --){
+            if(peaks[j].power > peaks[j-1].power){
+                let power = peaks[j].power;
+                peaks[j].power = peaks[j-1].power
+                peaks[j-1].power = power;
+            }
+        }
+    } 
+
+    // let string = "";
+    // for(let peak of peaks){
+    //     string += "{freq:"+peak.freq.toFixed(2)+", length:"+peak.width.toFixed(2)+", leftSlop:"+peak.leftSlop.toFixed(2)+", rightSlop:"+peak.rightSlop.toFixed(2)+"}";//, left:"+peak.rightSlop+", length:"+peak.length+"}";
+    // }
+
+    // console.log(`peaks ${peaks.length}: ${string}`);
+
+
+    let base = {coloriterator: coloriterator, colorStart: colorStart, range: range,  volume: volume};
+
+    if(maxpeak.power > 0){
+        base.freqLeft = Math.floor(maxpeak.left);
+        base.freqRight = Math.floor(maxpeak.right);
+        base.freqWidth = Math.floor(base.freqRight - base.freqLeft);
+        base.frequency = Math.floor(maxpeak.freq);
+        base.maxFrequency = Math.floor(range * SAMPLE_RATE/FFT_SIZE);
+        callback({base:base, peaks: peaks});
+    }else{
+        callback({base:base, peaks: peaks});
     }
 
-    let leftWidth = 0;
-    for(let i = maxIndex-1 ; i >= 0 ; i -- ){
-        if(deltas[i] < 0){
-            leftWidth++;
-        }else{
-            break;
-        }
-    }
-    let rightWidth = 0;
-    for(let i = maxIndex ; i < range - 1 ; i++ ){
-        if(deltas[i] > 0){
-            rightWidth++;
-        }else{
-            break;
-        }
-    }
-    let freqLeft = (maxIndex - leftWidth) * SAMPLE_RATE/FFT_SIZE;
-    let freqRight = (maxIndex + rightWidth) * SAMPLE_RATE/FFT_SIZE;
-    let freqWidth = Math.floor(freqRight - freqLeft);
-    let frequency = Math.floor(maxIndex * SAMPLE_RATE/FFT_SIZE);
-    let maxFrequency = Math.floor(range * SAMPLE_RATE/FFT_SIZE);
-    
+
     // console.log(`frequency width : ${freqWidth} volume: ${volume}  frequency: ${frequency}`);
     // console.log(`index width : ${leftWidth} + ${rightWidth} maxPower: ${maxPower}  maxIndex: ${maxIndex}`);
-
-    callback({
-        range: range,
-        volume: volume,
-        freqWidth: freqWidth,
-        frequency: frequency,
-        maxFrequency: maxFrequency,
-        coloriterator: coloriterator,
-        colorStart: colorStart,
-    });
 
     return;
 
@@ -235,7 +263,7 @@ function loadAudio(data){
 
 
     
-    console.log("analyserCallback ", analyserCallback);
+    // console.log("analyserCallback ", analyserCallback);
     audiobutton.addEventListener("click", async () => {
         console.log("isAudioRunning ", isAudioRunning());
         

@@ -2,12 +2,7 @@ isRunning = false;
 function loading(){    
 
 
-    loadFlash({
-        width: function(){return window.innerWidth;},
-        height: function(){return window.innerHeight;},
-        radius: function(){return window.innerHeight/200;},
-        canvas: "#canvas",
-    });
+
 
     registerSetting("enlargeSpeed");
     registerSetting("livingTimes");
@@ -19,7 +14,16 @@ function loading(){
     registerSetting("freqRange");
     registerSetting("coloriterator");
     registerSetting("colorStart");
+    registerSetting("bgcolor");
         
+    loadFlash({
+        width: function(){return window.innerWidth;},
+        height: function(){return window.innerHeight;},
+        radius: function(){return Math.min(window.innerWidth, window.innerHeight)/200;},
+        canvas: "#canvas",
+        backgroundColor: function(){return getSettingValue("bgcolor")},
+    });
+
     loadAudio({
         button: document.getElementById("microphone"),
         tonejs: {

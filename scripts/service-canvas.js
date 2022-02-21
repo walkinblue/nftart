@@ -17,6 +17,11 @@ function drawStar(ctx, star, time){
     let enlargeSpeed = star.enlargeSpeed;
     let fadetime = star.fadetime;
     let rotateSpeed = star.rotateSpeed;
+    // let vibrate = star.vibrate;
+
+    //震动起来
+    // x = x + vibrate.x;
+    // y = y + vibrate.y;
 
     let fadeRate = (born + living + fadetime- time.getTime()) / fadetime;
     
@@ -82,7 +87,9 @@ function loadFlash(data){
     let radius = data.radius;
     let canvas = document.querySelector(data.canvas);
     let context = canvas.getContext('2d');
+    let backgroundColor = data.backgroundColor;
     let items = [];
+    let vibrates = [];
     figures = {
         width: width,
         height: height,
@@ -90,6 +97,8 @@ function loadFlash(data){
         canvas: canvas,
         context: context,
         items: items,
+        backgroundColor: backgroundColor,
+        vibrates: vibrates,
     };
     flash();
 }
@@ -100,15 +109,28 @@ function flash(){
     const items = figures.items;
     const canvas = figures.canvas;
     const ctx = figures.context;
+    const backgroundColor = figures.backgroundColor();
+    const vibrates = figures.vibrates;
+
+
+    let vibrate = null;
+    if(vibrates.length > 0)vibrate = vibrates.splice(0,1)[0];
 
     canvas.height = height;
     canvas.width = width;
 
+    let screenNarrow = Math.min(width, height);
     // console.log(`flash width ${width} height: ${height}`);
 
     ctx.globalCompositeOperation = 'destination-over';
     ctx.clearRect(0,0,width,height); // clear canvas
 
+    if(vibrate){
+        // console.log(`vibrate ${vibrate}`, vibrate);
+        ctx.translate(vibrate.x, vibrate.y);
+    }
+    // ctx.fillStyle =  backgroundColor;
+    // canvas.style.backgroundColor = figures.backgroundColor();
     var time = new Date();
     for(let i = 0 ; i < items.length ; i ++ ){
         const item = items[i];
@@ -121,15 +143,28 @@ function flash(){
 
         if( born + living + fadetime < time.getTime()){
             figures.items.splice(i,1);
-        }else if(radius > width/2){
+        }else if(radius > screenNarrow/2){
             item.living = time.getTime() - item.born;
             // figures.items.splice(i,1);
         }else{
+            // item.vibrate = vibrate;
             // console.log(`intiming ${period} ${suvived} ${living} ${fadetime}`);
             // console.log("flash item drawing" );
             drawStar(ctx, item, time);
         }
     }
+    // if(vibrate){
+    //     ctx.translate(-vibrate.x, -vibrate.y);
+    // }
+    ctx.save();
+
+    let grad = ctx.createRadialGradient(width/2, height/2, width/10, width/2, height/2, height);
+    grad.addColorStop(0, "rgba(255,255,255,0)");
+    grad.addColorStop(1, backgroundColor);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,width,height);
+    ctx.restore();
+
     window.requestAnimationFrame(flash);
 }
 
@@ -137,6 +172,32 @@ var ctx = null;
 var figures = {
     items:[]
 };
+
+function setBackground(){
+    const canvas = figures.canvas;
+    const ctx = figures.context;
+
+}
+
+function pushVibrate(data){
+    for(let d of data)
+        figures.vibrates.push(d);
+}
+
+function feedCanvas(){
+    let backgroundColor = figures.backgroundColor();
+    console.log(`canvas backgroundcolor ${backgroundColor}`);
+    let startIndex = backgroundColor.lastIndexOf(",") + 1;
+    let endIndex = backgroundColor.length - 1;
+    let alpha = parseFloat(backgroundColor.substring(startIndex, endIndex));
+    if(alpha >= 1.0)return;
+    alpha += 0.1;
+    let newcolor = backgroundColor.substring(0, startIndex)+alpha.toFixed(2)+")";
+    figures.backgroundColor = function(){
+        return newcolor;
+    };
+    console.log(`canvas alpha ${alpha} ${newcolor} ${startIndex}`);
+}
 
 function pushFigure(data){
     // console.log(`pushFigure: ${data.color}`);
@@ -152,7 +213,8 @@ function pushFigure(data){
     let height = figures.height();
     let radius = figures.radius();
     
-    console.log(`push width ${width}, height${height}, ${livingTimes} ${size}`);
+
+    // console.log(`push width ${width}, height${height}, ${livingTimes} ${size}`);
 
     if(size == 0)return;
     // return;
