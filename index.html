@@ -1,9 +1,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="/nftart/scripts/service-audioext.js"></script>
         <script src="/nftart/scripts/service-audio.js"></script>
         <script src="/nftart/scripts/service-canvas.js"></script>
         <script src="/nftart/scripts/service-operation.js"></script>
+        <script src="/nftart/scripts/service-common.js"></script>
         <script src="/nftart/scripts/main.js"></script>
         <script src="/nftart/scripts/Tone.js"></script>
         <script src="/nftart/scripts/tone-ui.js"></script>
@@ -17,10 +19,10 @@
             <button  id="microphone" class="audio">
                 开始倾听
             </button>
-            <!-- <div>
+            <div hidden="true">
                 <div class="title">音量放大倍数(<text id="volumeTimesValue">1.5</text>)</div>
                 <input id="volumeTimes" type="range" max="3" min="0.5" value="1" step="0.5">
-            </div> -->
+            </div>
             <div>
                 <div class="title">大小变化速度(<text id="enlargeSpeedValue">40</text>)</div>
                 <input id="enlargeSpeed" type="range" max="200" min="2" value="40">
@@ -38,6 +40,43 @@
                 <input id="rotateSpeed" type="range" max="16" min="1" value="4">
             </div>
             <div>
+                <div class="title">音频范围</div>
+                <select id="freqRange" class="select" >
+                    <option  value="980">980Hz</option>
+                    <option  value="1225">1225Hz</option>
+                    <option  selected value="2450">2450Hz</option>
+                    <option  value="4900">4900Hz</option>
+                    <option  value="9800">9800Hz</option>
+                    <option  value="11025">11025z</option>
+                    <option  value="22050">22050Hz</option>
+                    <!-- <option  value="44100">44100Hz</option> -->
+                </select>
+            </div>
+            <div>
+                <div class="title">颜色循环</div>
+                <select id="coloriterator" class="select" >
+                    <option  value="1">一次</option>
+                    <option  value="2">二次</option>
+                    <option  value="3">三次</option>
+                    <option  selected value="4">四次</option>
+                    <option  value="5">五次</option>
+                    <option  value="6">六次</option>
+                    <option  value="8">八次</option>
+                    <!-- <option  value="44100">44100Hz</option> -->
+                </select>
+            </div>
+            <div>
+                <div class="title">颜色起始</div>
+                <select id="colorStart" class="select" >
+                    <option value="0">红色</option>
+                    <option value="60">黄色</option>
+                    <option value="120">绿色</option>
+                    <option selected value="180">浅蓝</option>
+                    <option value="240">蓝色</option>
+                    <option value="300">紫色</option>
+                </select>
+            </div>
+            <div hidden="true">
                 <div class="title">图形边数</div>
                 <select id="edgeNo" class="select">
                     <option  value="3">三角形</option>
@@ -92,11 +131,11 @@
             </canvas>    
         </div>
         <div id="monitors" class="monitors"> 
-            <div class="fftmonitor">
-                <canvas id="fftcanvas" width="300" height="80"></canvas>
+            <div class="artmonitor">
+                <canvas id="artcanvas" width="300" height="80" ></canvas>
             </div>
+            <div id="metermonitor" class="metermonitor"></div>
             <div id="fftmonitor" class="fftmonitor"></div>
-            <div id="metermonitor" class="fftmonitor"></div>
             <div id="wavemonitor" class="fftmonitor"></div>
         </div>
         <button id="monitoring" class="monitoring" hidden="true">

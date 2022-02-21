@@ -1,25 +1,4 @@
 
-
-function setEnlargeSpeed(e){
-    console.log("e "+e.target.value);
-    enlargeSpeed = e.target.value;
-    document.getElementById("enlargeSpeedValue").innerText = e.target.value;
-}
-function setLivingTimes(e){
-    console.log("e "+e.target.value);
-    livingTimes = e.target.value;
-    document.getElementById("livingTimesValue").innerText = e.target.value;
-}
-function setEdgeNo(e){
-    console.log("e "+e.target.value);
-    edgeNo = e.target.value;
-    // document.getElementById("edgeNoValue").innerText = e.target.value;
-}
-function setVolumeTimes(e){
-    console.log("e "+e.target.value);
-    volumeTimes = e.target.value;
-    document.getElementById("volumeTimesValue").innerText = e.target.value;
-}
 function setColorful(e){
     colorful = e.target.value
     c = replaceColor(colorful, 255);
@@ -35,20 +14,7 @@ function setBgcolor(e){
     document.getElementById("canvas").style.backgroundColor = background;
     document.getElementById("bgcolor").style.backgroundColor = reverseColor(background);
 }
-function setFadetime(e){
-    console.log("e fadetime "+e.target.value);
-    fadetime = e.target.value
-    document.getElementById("fadetimeValue").innerText = e.target.value;
-}
-function setRotateSpeed(e){
-    console.log("e rotate "+e.target.value);
-    rotateSpeed = e.target.value
-    document.getElementById("rotateSpeedValue").innerText = e.target.value;
-}
-function setBiasFreq(e){
-    console.log("e biasFreq "+e.target.value);
-    biasFreq = e.target.value;
-}
+
 function folding(){
     console.log("folding");
     if(document.getElementById("operations").style.visibility == "hidden"){
@@ -61,26 +27,46 @@ function folding(){
         document.getElementById("operations").style.visibility = "hidden";
         document.getElementById("monitors").style.visibility = "hidden";
         document.documentElement.requestFullscreen();
-        resizeCanvas();
+        // resizeCanvas();
     }
 
 }
-function resizeCanvas(){
-    let height = window.innerHeight;
-    let width = window.innerWidth;
-    let canvas = document.getElementById('canvas');
-    canvas.height = height;
-    canvas.width = width;
-    figures = {
-        width: width,
-        height: height,
-        radius: height/200,
-        items: []
-    };
-}
 
-async function sleep( ms){
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
+
+// function setFadetime(e){
+//     console.log("e fadetime "+e.target.value);
+//     fadetime = e.target.value
+//     document.getElementById("fadetimeValue").innerText = e.target.value;
+// }
+// function setRotateSpeed(e){
+//     console.log("e rotate "+e.target.value);
+//     rotateSpeed = e.target.value
+//     document.getElementById("rotateSpeedValue").innerText = e.target.value;
+// }
+// function setBiasFreq(e){
+//     console.log("e biasFreq "+e.target.value);
+//     biasFreq = e.target.value;
+// }
+
+
+
+// function setEnlargeSpeed(e){
+//     console.log("e "+e.target.value);
+//     enlargeSpeed = e.target.value;
+//     document.getElementById("enlargeSpeedValue").innerText = e.target.value;
+// }
+// function setLivingTimes(e){
+//     console.log("e "+e.target.value);
+//     livingTimes = e.target.value;
+//     document.getElementById("livingTimesValue").innerText = e.target.value;
+// }
+// function setEdgeNo(e){
+//     console.log("e "+e.target.value);
+//     edgeNo = e.target.value;
+//     // document.getElementById("edgeNoValue").innerText = e.target.value;
+// }
+// function setVolumeTimes(e){
+//     console.log("e "+e.target.value);
+//     volumeTimes = e.target.value;
+//     document.getElementById("volumeTimesValue").innerText = e.target.value;
+// }

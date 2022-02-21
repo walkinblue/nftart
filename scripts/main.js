@@ -1,29 +1,73 @@
 isRunning = false;
-function loading(){
-    resizeCanvas();
+function loading(){    
+
+
+    loadFlash({
+        width: function(){return window.innerWidth;},
+        height: function(){return window.innerHeight;},
+        radius: function(){return window.innerHeight/200;},
+        canvas: "#canvas",
+    });
+
+    registerSetting("enlargeSpeed");
+    registerSetting("livingTimes");
+    registerSetting("edgeNo");
+    registerSetting("fadetime");
+    registerSetting("rotateSpeed");
+    registerSetting("volumeTimes");
+    registerSetting("folder", folding);
+    registerSetting("freqRange");
+    registerSetting("coloriterator");
+    registerSetting("colorStart");
+        
+    loadAudio({
+        button: document.getElementById("microphone"),
+        tonejs: {
+            canvases: {
+                fft:"#fftmonitor",
+                meter:"#metermonitor",
+                wave: "#wavemonitor",
+                height: 80,
+            }
+        },
+        recording: {
+            css: "recording",
+            text: "停止倾听",
+        },
+        callback: visualShow,
+        monitor: {
+            canvas: "#artcanvas",
+            height: function(){return 80},
+            width: function(){return Math.floor(window.innerWidth/2)},
+            coloriterator: function(){return getSettingValue("coloriterator")},
+        },
+        range: function(){return getSettingValue("freqRange")},
+        colorStart: function(){return getSettingValue("colorStart")}
+    });
+
     
-    ctx = document.getElementById('canvas').getContext('2d');
-
-
-
-    flash();
 
     pushFigure({
         size: 10,
-        color: "hsla{240,100%,80%,1}"
+        color: "hsla(240,100%,50%,1)",
+        edgeNo: 5,
     });
 
-    loadingAudion(document.getElementById('microphone'));
-    document.getElementById("enlargeSpeed").addEventListener("change", setEnlargeSpeed);
-    document.getElementById("livingTimes").addEventListener("change", setLivingTimes);
-    document.getElementById("edgeNo").addEventListener("change", setEdgeNo);
-    // document.getElementById("colorful").addEventListener("change", setColorful);
-    document.getElementById("fadetime").addEventListener("change", setFadetime);
-    document.getElementById("rotateSpeed").addEventListener("change", setRotateSpeed);
-    // document.getElementById("volumeTimes").addEventListener("change", setVolumeTimes);
-    document.getElementById("folder").addEventListener("click", folding);
-    // document.getElementById("biasFreq").addEventListener("change", setBiasFreq);
-    // document.getElementById("bgcolor").addEventListener("change", setBgcolor);
+}
+
+
+
+                        // fft: document.querySelector(),
+                    // meter: document.querySelector(),
+                    // wave: document.querySelector(),
+                    // height: monitorheight,
+
+    // loadingAudion(document.getElementById('microphone'));
+
+    // registerSetting("colorful").addEventListener("change", setColorful);
+    // registerSetting("volumeTimes").addEventListener("change", setVolumeTimes);
+    // registerSetting("biasFreq").addEventListener("change", setBiasFreq);
+    // registerSetting("bgcolor").addEventListener("change", setBgcolor);
 
     // setColorful({target:{value:document.getElementById("colorful").value}});
     // setBgcolor({target:{value:document.getElementById("bgcolor").value}});
@@ -51,8 +95,3 @@ function loading(){
     //     }
 
     // });
-
-}
-
-
-

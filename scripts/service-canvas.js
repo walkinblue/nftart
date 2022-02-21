@@ -1,12 +1,7 @@
-let enlargeSpeed = 40;
-let livingTimes = 1600;
-let edgeNo = 5;
+
 let colorful = "rgba(0,1,1,#)";
-let fadetime = 3000;
-let rotateSpeed = 4
 let background = "rgba(255,255,255,1)";
-let volumeTimes = 1;
-const bpm = 429;
+const BPM = 429;
 
 function drawStar(ctx, star, time){
     let radius = star.radius;
@@ -19,15 +14,20 @@ function drawStar(ctx, star, time){
     let born = star.born;
     let living = star.living;
     let rotateDirection = star.rotateDirection;
+    let enlargeSpeed = star.enlargeSpeed;
+    let fadetime = star.fadetime;
+    let rotateSpeed = star.rotateSpeed;
 
     let fadeRate = (born + living + fadetime- time.getTime()) / fadetime;
     
-    // console.log(`rotateDirection: ${rotateDirection}`);
     if(fadeRate > 1) fadeRate = 1;
     else if(fadeRate < 0)fadeRate = 0;
+
     color = replaceAlpha(color, fadeRate);
 
-    let enlarge = (time - lastTime)*enlargeSpeed/(bpm*400) + 1.0;    
+    // console.log(`color: ${color} ${fadeRate} ${fadetime} ${living} ${born} ${time}`);
+    
+    let enlarge = (time - lastTime)*enlargeSpeed/(BPM*400) + 1.0;    
     let rotateAngle = (((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds())*rotateSpeed*rotateDirection + initAngle;
     let inRadius = radius/2;
     let lineWidth = radius/25;
@@ -53,6 +53,7 @@ function drawStar(ctx, star, time){
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
+
     ctx.beginPath();
     for(let i = 0 ; i < horn ; i ++ ){
         ctx.lineTo(points[i].x, points[i].y);
@@ -75,29 +76,56 @@ function drawStar(ctx, star, time){
     star.lastTime = time;
     // console.log("radius : " + star.radius + ", " + enlarge + ", initangle: "+ initAngle);
 }
-
+function loadFlash(data){
+    let width = data.width;
+    let height = data.height;
+    let radius = data.radius;
+    let canvas = document.querySelector(data.canvas);
+    let context = canvas.getContext('2d');
+    let items = [];
+    figures = {
+        width: width,
+        height: height,
+        radius : radius,
+        canvas: canvas,
+        context: context,
+        items: items,
+    };
+    flash();
+}
 
 function flash(){
-    let width = figures.width;
-    let height = figures.height;
-    let items = figures.items;
+    const width = figures.width();
+    const height = figures.height();
+    const items = figures.items;
+    const canvas = figures.canvas;
+    const ctx = figures.context;
+
+    canvas.height = height;
+    canvas.width = width;
+
+    // console.log(`flash width ${width} height: ${height}`);
 
     ctx.globalCompositeOperation = 'destination-over';
     ctx.clearRect(0,0,width,height); // clear canvas
 
     var time = new Date();
     for(let i = 0 ; i < items.length ; i ++ ){
-
         const item = items[i];
         const living = item.living;
         const born = item.born;
         const radius = item.radius;
+        const fadetime = item.fadetime;
+        const period = living + fadetime;
+        const suvived = time.getTime() - born;
+
         if( born + living + fadetime < time.getTime()){
-            // console.log("lasttime: " + born + ", living " + living + ", timstamp: "+ (time.getTime() - born));
             figures.items.splice(i,1);
-        // }else if(radius > figures.width){
-        //     figures.items.splice(i,1);
+        }else if(radius > width/2){
+            item.living = time.getTime() - item.born;
+            // figures.items.splice(i,1);
         }else{
+            // console.log(`intiming ${period} ${suvived} ${living} ${fadetime}`);
             // console.log("flash item drawing" );
             drawStar(ctx, item, time);
         }
@@ -112,26 +140,42 @@ var figures = {
 
 function pushFigure(data){
     // console.log(`pushFigure: ${data.color}`);
-    let size = data.size*volumeTimes;
     let color = data.color;
+    let edgeNo = data.edgeNo;
+    let livingTimes = getSettingValue("livingTimes");
+    let enlargeSpeed = getSettingValue("enlargeSpeed");
+    let rotateSpeed = getSettingValue("rotateSpeed");
+    let fadetime = getSettingValue("fadetime");
+    let volumeTimes = getSettingValue("volumeTimes");
+    let size = data.size*volumeTimes;
+    let width = figures.width();
+    let height = figures.height();
+    let radius = figures.radius();
     
+    console.log(`push width ${width}, height${height}, ${livingTimes} ${size}`);
+
     if(size == 0)return;
     // return;
     let figure = {
-        radius: figures.radius,
+        radius: radius,
         edge: convertEdge(edgeNo),
-        x: Math.floor(Math.random()*figures.width),
-        y: Math.floor(Math.random()*figures.height),
+        x: Math.floor(Math.random()*width),
+        y: Math.floor(Math.random()*height),
         angle: Math.floor(Math.random()*360),
         living: livingTimes*size,
         lastTime: Date.now(),
         born: Date.now(),
         color: color,
         rotateDirection: Math.floor(Math.random()*2)*2-1,
+        enlargeSpeed: enlargeSpeed,
+        rotateSpeed: rotateSpeed,
+        fadetime: fadetime,
     };
 
     figures.items.push(figure);
 }
+
+
 function convertEdge(edgeNo){
     if(edgeNo == "*"){
         return Math.floor(Math.random()*10) + 3;
@@ -180,3 +224,10 @@ function reverseColor(color){
     // console.log("reverse color "+color+"," + ocolor + "," + rcolor);
     return rcolor;
 }
+
+// let enlargeSpeed = 40;
+// let livingTimes = 1600;
+// let edgeNo = 5;
+// let fadetime = 3000;
+// let rotateSpeed = 4
+// let volumeTimes = 1;

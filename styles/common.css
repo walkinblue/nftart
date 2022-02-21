@@ -106,10 +106,19 @@ button:focus{
     background-color: rgba(200, 200, 200, 0);
     justify-content: center;
     align-items: center;
-    border-top: 1px solid #e0e0e0;
+    /* border-top: 1px solid #e0e0e0; */
 }
 .fftmonitor{
-    width: 25%;
+    width: 24%;
+    height: 80;
+    margin-right: 2px;
+}
+.artmonitor{
+    width: 50%;
+    height: 80;
+}
+.metermonitor{
+    width: 2%;
     height: 80;
 }
 
