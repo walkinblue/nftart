@@ -219,7 +219,7 @@ function pushFigure(data){
     if(size == 0)return;
     // return;
     let figure = {
-        radius: radius,
+        radius: radius * Math.sqrt(size),
         edge: convertEdge(edgeNo),
         x: Math.floor(Math.random()*width),
         y: Math.floor(Math.random()*height),
