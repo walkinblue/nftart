@@ -16,7 +16,8 @@ function loading(){
     registerSetting("coloriterator");
     registerSetting("colorStart");
     registerSetting("bgcolor");
-        
+    registerSetting("resetAll", resetAll);
+    
     loadFlash({
         width: function(){return document.body.clientWidth;},
         height: function(){return document.body.clientHeight;},

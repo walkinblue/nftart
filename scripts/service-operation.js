@@ -11,8 +11,14 @@ function setBgcolor(e){
     console.log("e bgcolor "+e.target.value);
     background = e.target.value;
     document.getElementById("bgcolor").style.color = replaceColor(background, 255);
+    document.getElementById("canvas").style.backgroundColor = background;
     document.getElementById("bgcolor").style.backgroundColor = reverseColor(background);
 }
+
+function resetAll(e){
+    window.location.reload();
+}
+
 
 function folding(){
     console.log("folding");
