@@ -2,16 +2,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> -->
-        <script src="/nftart/scripts/service-audioext.js"></script>
-        <script src="/nftart/scripts/service-audio.js"></script>
-        <script src="/nftart/scripts/service-canvas.js"></script>
-        <script src="/nftart/scripts/service-operation.js"></script>
-        <script src="/nftart/scripts/service-common.js"></script>
-        <script src="/nftart/scripts/main.js"></script>
-        <script src="/nftart/scripts/Tone.js"></script>
-        <script src="/nftart/scripts/tone-ui.js"></script>
-        <script src="/nftart/scripts/tone-components.js"></script>
-        <link rel="stylesheet" href="styles/common.css" />
+        <script src="/nftart/scripts/service-audioext.js?v=0.2"></script>
+        <script src="/nftart/scripts/service-audio.js?v=0.2"></script>
+        <script src="/nftart/scripts/service-canvas.js?v=0.2"></script>
+        <script src="/nftart/scripts/service-operation.js?v=0.2"></script>
+        <script src="/nftart/scripts/service-common.js?v=0.2"></script>
+        <script src="/nftart/scripts/main.js?v=0.2"></script>
+        <script src="/nftart/scripts/Tone.js?v=0.1"></script>
+        <script src="/nftart/scripts/tone-ui.js?v=1.0"></script>
+        <script src="/nftart/scripts/tone-components.js?v=1.0"></script>
+        <link rel="stylesheet" href="styles/common.css?v=1.1" />
     </head>
     <body id="body" onload="loading()">
         <div id="operations" class="operations">
@@ -26,20 +26,21 @@
             </div>
             <div>
                 <div class="title">大小变化速度(<text id="enlargeSpeedValue">40</text>)</div>
-                <input id="enlargeSpeed" type="range" max="200" min="2" value="40">
+                <input id="enlargeSpeed" type="range" max="200" min="2" value="30">
             </div>
             <div>
                 <div class="title">基本停留时长(<text id="livingTimesValue">1600</text>)</div>
                 <input id="livingTimes" type="range" max="5000" min="100" value="1600">
             </div>
             <div>
-                <div class="title">消失用时(<text id="fadetimeValue">3000</text>)</div>
-                <input id="fadetime" type="range" max="8000" min="1000" value="3000">
+                <div class="title">消失用时(<text id="fadetimeValue"></text>)</div>
+                <input id="fadetime" type="range" max="8000" min="1000" value="6000">
             </div>
             <div>
                 <div class="title">旋转速度(<text id="rotateSpeedValue">4</text>)</div>
                 <input id="rotateSpeed" type="range" max="16" min="1" value="4">
             </div>
+            
             <div>
                 <div class="title">音频范围</div>
                 <select id="freqRange" class="select" >
@@ -107,8 +108,30 @@
                 </select>
             </div>
             <div>
+                <div class="title">最大限制</div>
+                <select id="sizeLimit" class="select" >
+                    <option  value="1">屏幕高度</option>
+                    <option  value="0.5">屏幕一半</option>
+                    <option  value="0.25">屏幕1/4</option>
+                    <option  value="0.1">屏幕1/10</option>
+                    <option value="0.05">屏幕1/15</option>
+                    <option  selected value="0.05">屏幕1/20</option>
+                </select>
+            </div>
+            <div >
+                <div class="title">震动幅度</div>
+                <select id="vibrateRadius" class="select" >
+                    <option  value="0.01">屏幕1/100</option>
+                    <option value="0.005">屏幕1/200</option>
+                    <option selected value="0.0025">屏幕1/400</option>
+                    <option  value="0.00125">屏幕1/800</option>
+                    <option value="0.000833">屏幕1/1200</option>
+                </select>
+            </div>
+            <div>
                 <button class="resetall" id="resetAll" >重置</button>
             </div>
+
             <!-- <div>
                 <div class="title">人声频率偏移(Hz)</div>
                 <input id="biasFreq" type="number" value="50" style="width: 50px;">

@@ -16,7 +16,10 @@ function loading(){
     registerSetting("coloriterator");
     registerSetting("colorStart");
     registerSetting("bgcolor");
+    registerSetting("sizeLimit");
+    registerSetting("vibrateRadius");
     registerSetting("resetAll", resetAll);
+    
     
     loadFlash({
         width: function(){return document.body.clientWidth;},
@@ -24,6 +27,8 @@ function loading(){
         radius: function(){return Math.min(document.body.clientWidth, document.body.clientHeight)/200;},
         canvas: "#canvas",
         backgroundColor: function(){return getSettingValue("bgcolor")},
+        sizeLimit: function(){return getSettingValue("sizeLimit")*Math.min(document.body.clientWidth, document.body.clientHeight)},
+        vibrateRadius: function(){return getSettingValue("vibrateRadius")*Math.min(document.body.clientWidth, document.body.clientHeight)},
     });
 
     loadAudio({

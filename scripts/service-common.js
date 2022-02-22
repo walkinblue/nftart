@@ -4,12 +4,12 @@ function initSettings(ids){
     let data = {};
     for(let id of ids){
         let element = document.getElementById(id);
-        data[id]=parseInt(element.value);
+        data[id]=parseFloat(element.value);
     }
     settings = data;
 }
 function initSetting(element, id){
-    let value = parseInt(element.value);
+    let value = parseFloat(element.value);
     if(!value)value = element.value;
     settings[id] = value;
     console.log(`init setting ${id}: ${value}`);
@@ -20,7 +20,7 @@ function initSetting(element, id){
 }
 function settingListener(e){
     const id = e.target.id;
-    let value = parseInt(e.target.value);
+    let value = parseFloat(e.target.value);
     if(!value)value = e.target.value;
     settings[id] = value
     let showElement = document.getElementById(id+"Value");

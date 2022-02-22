@@ -38,6 +38,7 @@ function visualShow(data){
 
     if(vibratePeaks.length >= 3){
         let i = 1;
+        console.log("................Success................");
         for(let v of vibratePeaks){
             const peaks = v.peaks;
             const volume = v.volume;
@@ -45,16 +46,35 @@ function visualShow(data){
             string += peaksToString(peaks);
             console.log(string);
         }
-        console.log("................");
+        console.log("................................");
 
+        getSettingValue("vibrateRadius");
+        let vibrateRadius = figures.vibrateRadius();
         let vibrations = [];
+
+
         for(let i = 0 ; i < 16 ; i ++ ){
-            vibrations.push({x:2,y:0})
-            vibrations.push({x:-2,y:0})
+            vibrations.push({x:vibrateRadius,y:0})
+            vibrations.push({x:-vibrateRadius,y:0})
         }
         pushVibrate(vibrations)
         vibratePeaks = [];
         feedCanvas();
+    }else{
+        return;
+        if(vibratePeaks.length > 0){
+            console.log("________________FAIL________________");
+            let i = 1;
+            for(let v of vibratePeaks){
+                const peaks = v.peaks;
+                const volume = v.volume;
+                let string = `No${i++}. volume:${volume}.`;
+                string += peaksToString(peaks);
+                console.log(string);
+            }
+            console.log("________________________________");    
+        }
+
     }
 
 
@@ -73,7 +93,12 @@ function filterPeaks(peaks, volume) {
         if (peak.width <= 20) continue;
         // console.log(`filter peaks loop ${peak.leftSlop}`);
         //两边声音不突出，跳过, 有一边ok也行。
-        if (peak.leftSlop <= 1.0 && peak.rightSlop >= -1.0) continue;
+        if (peak.leftSlop < 1.2 && peak.rightSlop > -1.2) continue;
+        if (peak.leftSlop < 0.5 || peak.rightSlop > -0.5) continue;
+
+        //如果两边声音的差距比较小，就是电子声，不是人声。
+        if ( Math.abs(peak.leftSlop + peak.rightSlop)/Math.abs(peak.leftSlop - peak.rightSlop) < 0.05)continue;
+
         //非人声，跳过
         if (peak.freq > 1000) continue;
         valids.push(peak);
@@ -90,6 +115,7 @@ function filterPeaks(peaks, volume) {
     for (let i = 0; i < 1; i++) {
         let p0 = valids[i];
         let p1 = valids[i + 1];
+        let p2 = valids[i + 2];
         //如果峰值和峰值之间 能量差距太大,就算了
         if (Math.abs(p1.power - p0.power) / p0.power > 0.4) {
             // console.log("power to big:"+peaksToString(valids));
@@ -97,19 +123,35 @@ function filterPeaks(peaks, volume) {
             return null;
         }
         //如果峰值和峰值之间 频率差距太大,就算了
-        if (Math.abs(p1.freq - p0.freq)  > 300) {
+        if (Math.abs(p1.freq - p0.freq)  > 200) {
             // console.log("freq to big:"+peaksToString(valids));
             // console.log("freq to big orginal:"+peaksToString(peaks));
             return null;
         }
+        //不是人声就算了
+        if(p0.freq > 400){
+            return null;
+        }
+        //左右偏离度太大，算了。
+        if(Math.abs(p0.leftSlop + p0.rightSlop)/Math.min(p0.leftSlop, - p0.rightSlop) > 1){
+            return null;
+        }
+
+        //如果两个步骤之间的频率，是几乎等步长的，说明是和弦。去掉
+        // if(p2 != null){
+        //     const freqStep = Math.abs(p1.freq - p0.freq)/ Math.abs(p2.freq - p1.freq);
+        //     if( Math.abs(0.5 - freqStep) < 0.1 || Math.abs(1 - freqStep) < 0.1 || Math.abs(2 - freqStep) < 0.2 || Math.abs(4 - freqStep) < 0.2 ){
+        //         return null;
+        //     }    
+        // }
     }
     return valids;
 }
 function peaksToString(peaks){
     let i = 1;
-    let string = `peaks.len:${peaks.length},`;
+    let string = `len:${peaks.length}｜ `;
     for(let p of peaks){
-        string += `f${p.freq.toFixed(0)},p${p.power},w${p.width.toFixed(0)},ls${p.leftSlop.toFixed(2)},rs${p.rightSlop.toFixed(2)}|`;
+        string += `f${p.freq.toFixed(0)},p${p.power},w${p.width.toFixed(0)},ls${p.leftSlop.toFixed(2)},rs${p.rightSlop.toFixed(2)}| `;
     }
     return string;
 }

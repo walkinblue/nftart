@@ -26,12 +26,12 @@ function folding(){
         document.getElementById("folder").classList.remove("folded");
         document.getElementById("operations").style.visibility = "";
         document.getElementById("monitors").style.visibility = "";
-        document.exitFullscreen();
+        // document.exitFullscreen();
     }else{
         document.getElementById("folder").classList.add("folded");
         document.getElementById("operations").style.visibility = "hidden";
         document.getElementById("monitors").style.visibility = "hidden";
-        document.documentElement.requestFullscreen();
+        // document.documentElement.requestFullscreen();
         // resizeCanvas();
     }
 
