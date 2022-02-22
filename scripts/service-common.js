@@ -62,20 +62,6 @@ function registerSetting(id, func){
 }
 
 
-// function resizeCanvas(){
-//     let height = window.innerHeight;
-//     let width = window.innerWidth;
-//     let canvas = document.getElementById('canvas');
-//     canvas.height = height;
-//     canvas.width = width;
-//     figures = {
-//         width: width,
-//         height: height,
-//         radius: height/200,
-//         items: []
-//     };
-// }
-
 async function sleep( ms){
     return new Promise((resolve) => {
       setTimeout(resolve, ms);

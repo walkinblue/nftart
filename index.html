@@ -1,6 +1,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> -->
         <script src="/nftart/scripts/service-audioext.js"></script>
         <script src="/nftart/scripts/service-audio.js"></script>
         <script src="/nftart/scripts/service-canvas.js"></script>
@@ -12,7 +13,7 @@
         <script src="/nftart/scripts/tone-components.js"></script>
         <link rel="stylesheet" href="styles/common.css" />
     </head>
-    <body onload="loading()">
+    <body id="body" onload="loading()">
         <div id="operations" class="operations">
             <div class="forfolder">&nbsp;
             </div>
@@ -92,6 +93,22 @@
                     <option value="*">随机</option>
                 </select>
             </div>
+            <div>
+                <div class="title">背景颜色</div>
+                <select id="bgcolor"  class="select">
+                    <option value="rgba(255,255,255,0.1)">白色</option>
+                    <option value="rgba(0,255,255,0.1)">青色</option>
+                    <option value="rgba(0,0,0,0.1)">黑色</option>
+                    <option value="rgba(255,0,0,0.1)">红色</option>
+                    <option value="rgba(0,255,0,0.1)">绿色</option>
+                    <option value="rgba(0,0,255,0.1)">蓝色</option>
+                    <option selected value="rgba(255,200,0,0.1)">金色</option>
+                    <option value="rgba(255,0,255,0.1)">紫色</option>
+                </select>
+            </div>
+            <div>
+                
+            </div>
             <!-- <div>
                 <div class="title">人声频率偏移(Hz)</div>
                 <input id="biasFreq" type="number" value="50" style="width: 50px;">
@@ -110,19 +127,7 @@
                     <option value="*">随机</option>
                 </select>
             </div> -->
-            <div>
-                <div class="title">背景颜色</div>
-                <select id="bgcolor"  class="select">
-                    <option value="rgba(255,255,255,0.5)">白色</option>
-                    <option value="rgba(0,255,255,0.5)">青色</option>
-                    <option value="rgba(0,0,0,0.5)">黑色</option>
-                    <option value="rgba(255,0,0,0.5)">红色</option>
-                    <option value="rgba(0,255,0,0.5)">绿色</option>
-                    <option value="rgba(0,0,255,0.5)">蓝色</option>
-                    <option selected value="rgba(255,200,0,0.1)">黄色</option>
-                    <option value="rgba(255,0,255,0.5)">紫色</option>
-                </select>
-            </div>
+
 
         </div>
         <div id="folder" class="folder"></div>

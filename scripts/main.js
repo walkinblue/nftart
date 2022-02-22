@@ -2,7 +2,8 @@ isRunning = false;
 function loading(){    
 
 
-
+    console.log("body width"+document.body.clientWidth);
+    console.log("body height"+document.querySelector("#body").clientHeight);
 
     registerSetting("enlargeSpeed");
     registerSetting("livingTimes");
@@ -17,9 +18,9 @@ function loading(){
     registerSetting("bgcolor");
         
     loadFlash({
-        width: function(){return window.innerWidth;},
-        height: function(){return window.innerHeight;},
-        radius: function(){return Math.min(window.innerWidth, window.innerHeight)/200;},
+        width: function(){return document.body.clientWidth;},
+        height: function(){return document.body.clientHeight;},
+        radius: function(){return Math.min(document.body.clientWidth, document.body.clientHeight)/200;},
         canvas: "#canvas",
         backgroundColor: function(){return getSettingValue("bgcolor")},
     });
@@ -42,7 +43,7 @@ function loading(){
         monitor: {
             canvas: "#artcanvas",
             height: function(){return 80},
-            width: function(){return Math.floor(window.innerWidth/2)},
+            width: function(){return Math.floor(document.body.clientWidth/2)},
             coloriterator: function(){return getSettingValue("coloriterator")},
         },
         range: function(){return getSettingValue("freqRange")},

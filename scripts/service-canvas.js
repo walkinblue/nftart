@@ -88,6 +88,18 @@ function loadFlash(data){
     let canvas = document.querySelector(data.canvas);
     let context = canvas.getContext('2d');
     let backgroundColor = data.backgroundColor;
+    let feedColorValue = data.backgroundColor();
+
+    let feedColor = function(){
+        let backgroundColor = figures.backgroundColor();
+        let feedColorValue = figures.feedColorValue;
+        let startIndex = feedColorValue.lastIndexOf(",") + 1;
+        if(feedColorValue.substring(0, startIndex) != backgroundColor.substring(0, startIndex)){
+            feedColorValue = backgroundColor;
+            figures.feedColorValue = feedColorValue;
+        }        
+        return figures.feedColorValue;
+    };
     let items = [];
     let vibrates = [];
     figures = {
@@ -97,8 +109,10 @@ function loadFlash(data){
         canvas: canvas,
         context: context,
         items: items,
-        backgroundColor: backgroundColor,
         vibrates: vibrates,
+        backgroundColor: backgroundColor,
+        feedColor: feedColor,
+        feedColorValue: feedColorValue,
     };
     flash();
 }
@@ -109,7 +123,7 @@ function flash(){
     const items = figures.items;
     const canvas = figures.canvas;
     const ctx = figures.context;
-    const backgroundColor = figures.backgroundColor();
+    const feedColor = figures.feedColor();
     const vibrates = figures.vibrates;
 
 
@@ -129,8 +143,8 @@ function flash(){
         // console.log(`vibrate ${vibrate}`, vibrate);
         ctx.translate(vibrate.x, vibrate.y);
     }
-    // ctx.fillStyle =  backgroundColor;
-    // canvas.style.backgroundColor = figures.backgroundColor();
+    // ctx.fillStyle =  feedColor;
+    // canvas.style.feedColor = figures.feedColor();
     var time = new Date();
     for(let i = 0 ; i < items.length ; i ++ ){
         const item = items[i];
@@ -157,10 +171,10 @@ function flash(){
     //     ctx.translate(-vibrate.x, -vibrate.y);
     // }
     ctx.save();
-
+    
     let grad = ctx.createRadialGradient(width/2, height/2, width/10, width/2, height/2, height);
     grad.addColorStop(0, "rgba(255,255,255,0)");
-    grad.addColorStop(1, backgroundColor);
+    grad.addColorStop(1, feedColor);
     ctx.fillStyle = grad;
     ctx.fillRect(0,0,width,height);
     ctx.restore();
@@ -184,19 +198,20 @@ function pushVibrate(data){
         figures.vibrates.push(d);
 }
 
+
 function feedCanvas(){
-    let backgroundColor = figures.backgroundColor();
-    console.log(`canvas backgroundcolor ${backgroundColor}`);
-    let startIndex = backgroundColor.lastIndexOf(",") + 1;
-    let endIndex = backgroundColor.length - 1;
-    let alpha = parseFloat(backgroundColor.substring(startIndex, endIndex));
-    if(alpha >= 1.0)return;
-    alpha += 0.1;
-    let newcolor = backgroundColor.substring(0, startIndex)+alpha.toFixed(2)+")";
-    figures.backgroundColor = function(){
-        return newcolor;
-    };
-    console.log(`canvas alpha ${alpha} ${newcolor} ${startIndex}`);
+    let feedColorValue = figures.feedColorValue;
+    let startIndex = feedColorValue.lastIndexOf(",") + 1;
+    let endIndex = feedColorValue.length - 1;
+    let alpha = parseFloat(feedColorValue.substring(startIndex, endIndex));
+    if(alpha < 1.0){
+        alpha += 0.1;
+    }else{
+        return;
+    } 
+    feedColorValue = feedColorValue.substring(0, startIndex)+alpha.toFixed(2)+")";
+    // console.log(`canvas alpha ${alpha} ${feedColorValue} ${figures.feedColorValue}`);
+    figures.feedColorValue = feedColorValue;
 }
 
 function pushFigure(data){

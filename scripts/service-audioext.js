@@ -84,7 +84,7 @@ function filterPeaks(peaks, volume) {
     //如果峰值太多，可能是音乐，就算了。
     if (valids.length >= 8) return null;
 
-    console.log(`filter peaks ${volume} ${peaks.length} ${valids.length}`);
+    // console.log(`filter peaks ${volume} ${peaks.length} ${valids.length}`);
 
     
     for (let i = 0; i < 1; i++) {
@@ -92,14 +92,14 @@ function filterPeaks(peaks, volume) {
         let p1 = valids[i + 1];
         //如果峰值和峰值之间 能量差距太大,就算了
         if (Math.abs(p1.power - p0.power) / p0.power > 0.4) {
-            console.log("power to big:"+peaksToString(valids));
-            console.log("freq to big orginal:"+peaksToString(peaks));
+            // console.log("power to big:"+peaksToString(valids));
+            // console.log("freq to big orginal:"+peaksToString(peaks));
             return null;
         }
         //如果峰值和峰值之间 频率差距太大,就算了
         if (Math.abs(p1.freq - p0.freq)  > 300) {
-            console.log("freq to big:"+peaksToString(valids));
-            console.log("freq to big orginal:"+peaksToString(peaks));
+            // console.log("freq to big:"+peaksToString(valids));
+            // console.log("freq to big orginal:"+peaksToString(peaks));
             return null;
         }
     }
