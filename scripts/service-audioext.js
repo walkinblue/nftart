@@ -37,6 +37,16 @@ function visualShow(data){
     }
 
     if(vibratePeaks.length >= 3){
+        let maxVolume, minVolume;
+        for(let v of vibratePeaks){
+            maxVolume = Math.max(maxVolume, v.volume);
+            minVolume = Math.min(maxVolume, v.volume);
+        }
+        //如果音量都差不多大，就应该不是人声。
+        if(maxVolume - minVolume <= 3){
+            return;
+        }
+
         let i = 1;
         console.log("................Success................");
         for(let v of vibratePeaks){
