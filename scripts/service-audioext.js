@@ -16,7 +16,7 @@ function visualShow(data){
     
         let size = Math.sqrt(volume);
         let hue = (Math.floor(frequency/maxFrequency * 360* coloriterator)+colorStart + 360)%360;
-        let light = 100-Math.sqrt(volume/100)*100;
+        let light = 100-volume;//Math.pow(volume/100, 2)*100;
         let color = `hsla(${hue},100%,${light}%,1)`;
         let edgeNo = Math.floor(Math.sqrt(freqWidth));
         if(edgeNo<3)edgeNo = 3;
